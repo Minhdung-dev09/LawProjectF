@@ -1,17 +1,35 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import Comment from "../Comment";
-import { newsCategories } from "../../data";
+import { newsCategories, news } from "../../data";
 
-export default function NewsDetail({ article }) {
+export default function NewsDetail() {
+  const { id } = useParams();
+  const article = news.find((n) => n.id === Number(id));
   const [isSaved, setIsSaved] = useState(false);
-  const category = newsCategories.find((cat) => cat.slug === article.category);
+  const category = newsCategories.find((cat) => cat.slug === article?.category);
 
   const handleSave = () => {
     setIsSaved(!isSaved);
     // TODO: Implement save functionality
   };
+
+  if (!article) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-8 text-center">
+        <h2 className="text-2xl font-bold text-primary-800">
+          Không tìm thấy bài viết
+        </h2>
+        <Link
+          to="/news"
+          className="inline-block mt-4 text-primary-600 hover:text-primary-700"
+        >
+          Quay lại danh sách tin tức
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <motion.div

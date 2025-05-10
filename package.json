@@ -14,11 +14,11 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.0.18",
-    "framer-motion": "^11.0.8",
+    "framer-motion": "^11.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-helmet-async": "^2.0.4",
-    "react-router-dom": "^6.22.3"
+    "react-helmet-async": "^2.0.5",
+    "react-router-dom": "^6.30.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",

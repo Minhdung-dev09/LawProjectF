@@ -59,7 +59,7 @@ export default function Banner() {
                 key={slides[currentSlide].title}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
+                transition={{ duration: 0.8, delay: 0 }}
                 className="text-4xl md:text-5xl font-bold mb-4"
               >
                 {slides[currentSlide].title}
