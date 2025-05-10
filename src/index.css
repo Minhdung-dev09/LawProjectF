@@ -15,21 +15,21 @@
 
   .btn-secondary {
     @apply bg-white text-primary-600 border-2 border-primary-600 px-6 py-2 rounded-lg hover:bg-primary-50 transition-colors;
-  }
+}
 
   .input-primary {
     @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
-  }
+}
 }
 
 /* Custom animations */
 @keyframes float {
   0% {
     transform: translateY(0px);
-  }
+}
   50% {
     transform: translateY(-10px);
-  }
+}
   100% {
     transform: translateY(0px);
   }
@@ -53,7 +53,7 @@
 ::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
-}
+  }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #666;
