@@ -5,7 +5,7 @@ export default function AdSidebar() {
     <motion.div
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="w-64 bg-white rounded-lg shadow-lg p-6"
+      className="w-64 bg-white rounded-lg shadow-lg p-6 sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto"
     >
       <h3 className="text-xl font-bold text-primary-800 mb-4">Quảng cáo</h3>
 

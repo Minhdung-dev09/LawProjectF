@@ -8,6 +8,7 @@ import Shop from "./pages/Shop";
 import Consultation from "./pages/Consultation";
 import Cart from "./components/Cart";
 import WelcomePopup from "./components/WelcomePopup";
+import FAQ from "./pages/FAQ";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
             <Route path="shop/:id" element={<Shop />} />
             <Route path="consultation" element={<Consultation />} />
             <Route path="cart" element={<Cart />} />
+            <Route path="faq" element={<FAQ />} />
           </Route>
         </Routes>
       </HelmetProvider>

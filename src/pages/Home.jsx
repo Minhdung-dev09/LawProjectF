@@ -68,8 +68,8 @@ export default function Home() {
               <h2 className="text-2xl font-bold text-primary-800 mb-6">
                 Tin tức mới nhất
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {news.slice(0, 2).map((item) => (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {news.slice(0, 6).map((item) => (
                   <motion.article
                     key={item.id}
                     initial={{ opacity: 0, y: 20 }}
@@ -81,20 +81,22 @@ export default function Home() {
                       alt={item.title}
                       className="w-full h-48 object-cover"
                     />
-                    <div className="p-6">
+                    <div className="p-4">
                       <div className="flex items-center text-primary-600 mb-2">
-                        <span className="mr-4">{item.date}</span>
-                        <span className="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm">
+                        <span className="mr-4 text-sm">{item.date}</span>
+                        <span className="bg-primary-100 text-primary-700 px-2 py-1 rounded-full text-xs">
                           {item.category}
                         </span>
                       </div>
-                      <h3 className="text-xl font-semibold mb-2 text-primary-800">
+                      <h3 className="text-lg font-semibold mb-2 text-primary-800 line-clamp-2">
                         {item.title}
                       </h3>
-                      <p className="text-primary-600 mb-4">{item.excerpt}</p>
+                      <p className="text-primary-600 mb-4 text-sm line-clamp-3">
+                        {item.excerpt}
+                      </p>
                       <Link
                         to={`/news/${item.id}`}
-                        className="text-primary-600 hover:text-primary-700 font-medium"
+                        className="text-primary-600 hover:text-primary-700 font-medium text-sm"
                       >
                         Đọc thêm →
                       </Link>
@@ -102,21 +104,89 @@ export default function Home() {
                   </motion.article>
                 ))}
               </div>
+              <div className="text-center mt-8">
+                <Link
+                  to="/news"
+                  className="inline-block px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                >
+                  Xem thêm tin tức
+                </Link>
+              </div>
             </section>
 
-            <section className="bg-primary-50 rounded-lg p-8 text-center">
-              <h2 className="text-2xl font-bold text-primary-800 mb-4">
-                Cần tư vấn pháp lý?
-              </h2>
-              <p className="text-primary-600 mb-6">
-                Đội ngũ luật sư của chúng tôi luôn sẵn sàng hỗ trợ bạn
-              </p>
-              <Link
-                to="/consultation"
-                className="inline-block px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
-              >
-                Đặt lịch tư vấn
-              </Link>
+            <section className="bg-gradient-to-r from-primary-50 to-primary-100 rounded-lg p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <h2 className="text-2xl font-bold text-primary-800 mb-6">
+                    Câu hỏi pháp lý thường gặp
+                  </h2>
+                  <div className="space-y-4">
+                    <div className="bg-white rounded-lg p-4 shadow-sm">
+                      <h3 className="font-semibold text-primary-800 mb-2">
+                        Thời hiệu khởi kiện là gì?
+                      </h3>
+                      <p className="text-primary-600 text-sm">
+                        Thời hiệu khởi kiện là thời hạn mà chủ thể được quyền
+                        khởi kiện để yêu cầu Tòa án giải quyết vụ án dân sự bảo
+                        vệ quyền và lợi ích hợp pháp bị xâm phạm.
+                      </p>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 shadow-sm">
+                      <h3 className="font-semibold text-primary-800 mb-2">
+                        Hợp đồng miệng có giá trị pháp lý không?
+                      </h3>
+                      <p className="text-primary-600 text-sm">
+                        Hợp đồng miệng vẫn có giá trị pháp lý nếu đáp ứng đủ các
+                        điều kiện về năng lực hành vi dân sự và sự tự nguyện của
+                        các bên.
+                      </p>
+                    </div>
+                  </div>
+                  <Link
+                    to="/faq"
+                    className="inline-block mt-4 text-primary-600 hover:text-primary-700 font-medium"
+                  >
+                    Xem thêm câu hỏi →
+                  </Link>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-primary-800 mb-6">
+                    Thống kê thú vị
+                  </h2>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-white rounded-lg p-4 text-center shadow-sm">
+                      <div className="text-3xl font-bold text-primary-600 mb-2">
+                        98%
+                      </div>
+                      <p className="text-primary-600 text-sm">
+                        Tỷ lệ vụ án thành công
+                      </p>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 text-center shadow-sm">
+                      <div className="text-3xl font-bold text-primary-600 mb-2">
+                        15+
+                      </div>
+                      <p className="text-primary-600 text-sm">
+                        Năm kinh nghiệm
+                      </p>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 text-center shadow-sm">
+                      <div className="text-3xl font-bold text-primary-600 mb-2">
+                        5000+
+                      </div>
+                      <p className="text-primary-600 text-sm">
+                        Khách hàng hài lòng
+                      </p>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 text-center shadow-sm">
+                      <div className="text-3xl font-bold text-primary-600 mb-2">
+                        24/7
+                      </div>
+                      <p className="text-primary-600 text-sm">Hỗ trợ pháp lý</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </section>
           </div>
 

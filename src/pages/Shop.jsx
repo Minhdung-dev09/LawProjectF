@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import Banner from "../components/Banner";
 
 const categories = ["Tất cả", "Sách", "Tài liệu", "Khóa học"];
 
@@ -78,8 +77,6 @@ export default function Shop() {
           <meta name="description" content={selectedProduct.description} />
         </Helmet>
 
-        <Banner />
-
         <div className="max-w-7xl mx-auto px-4 py-8">
           <Link
             to="/shop"
@@ -136,8 +133,6 @@ export default function Shop() {
           content="Cửa hàng cung cấp sách, tài liệu và khóa học pháp lý chất lượng cao."
         />
       </Helmet>
-
-      <Banner />
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">

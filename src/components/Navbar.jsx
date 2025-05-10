@@ -8,6 +8,7 @@ const navigation = [
   { name: "Tin tức", href: "/news" },
   { name: "Cửa hàng", href: "/shop" },
   { name: "Tư vấn", href: "/consultation" },
+  { name: "FAQ", href: "/faq" },
 ];
 
 export default function Navbar() {
@@ -19,14 +20,15 @@ export default function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center space-x-2">
+              <img src="/logo.svg" alt="SushiLaw Logo" className="w-8 h-8" />
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className="text-2xl font-bold text-primary-600"
+                className="text-2xl font-bold text-primary-600 font-heading"
               >
-                LawPJ
+                SushiLaw
               </motion.div>
             </Link>
           </div>

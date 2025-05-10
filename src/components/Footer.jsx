@@ -7,16 +7,26 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Công ty Luật ABC</h3>
+            <h3 className="text-xl font-bold mb-4 font-heading">SushiLaw</h3>
+            <p className="text-primary-200 mb-4 relative">
+              "Công lý không chỉ là lý thuyết, mà là hành động - Chúng tôi biến
+              lý thuyết thành thực tế"
+              <span className="text-red-500 text-sm ml-2">Mrs. LTT-Ngan</span>
+            </p>
             <p className="text-primary-200">
-              Chuyên cung cấp dịch vụ pháp lý chuyên nghiệp, uy tín hàng đầu
-              Việt Nam.
+              Địa chỉ: Hà Nội, Việt Nam
+              <br />
+              Điện thoại: 0392085583
+              <br />
+              Email: doanminhdung662@gmail.com
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Liên kết nhanh</h3>
+            <h3 className="text-xl font-bold mb-4 font-heading">
+              Liên kết nhanh
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -50,47 +60,59 @@ export default function Footer() {
                   Tư vấn
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/faq"
+                  className="text-primary-200 hover:text-white transition-colors"
+                >
+                  FAQ
+                </Link>
+              </li>
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Services */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Liên hệ</h3>
-            <ul className="space-y-2 text-primary-200">
-              <li>123 Đường ABC, Quận XYZ</li>
-              <li>TP. Hồ Chí Minh, Việt Nam</li>
-              <li>Email: info@abclaw.com</li>
-              <li>Phone: (84) 123 456 789</li>
+            <h3 className="text-xl font-bold mb-4 font-heading">Dịch vụ</h3>
+            <ul className="space-y-2">
+              <li>
+                <span className="text-primary-200">Tư vấn pháp lý</span>
+              </li>
+              <li>
+                <span className="text-primary-200">Đại diện pháp lý</span>
+              </li>
+              <li>
+                <span className="text-primary-200">Soạn thảo hợp đồng</span>
+              </li>
+              <li>
+                <span className="text-primary-200">Tư vấn doanh nghiệp</span>
+              </li>
             </ul>
           </div>
 
-          {/* Newsletter */}
+          {/* Contact */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Đăng ký nhận tin</h3>
+            <h3 className="text-xl font-bold mb-4 font-heading">Liên hệ</h3>
             <p className="text-primary-200 mb-4">
-              Nhận thông tin mới nhất về tin tức và dịch vụ của chúng tôi.
+              Luật sư Ngân - Cử nhân Luật Đại học Quốc gia Hà Nội
             </p>
-            <form className="space-y-2">
-              <input
-                type="email"
-                placeholder="Email của bạn"
-                className="w-full px-4 py-2 rounded bg-primary-700 text-white placeholder-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
-              />
-              <button
-                type="submit"
-                className="w-full px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-500 transition-colors"
-              >
-                Đăng ký
-              </button>
-            </form>
+            <div className="space-y-2">
+              <p className="text-primary-200">
+                <strong>Địa chỉ:</strong> Hà Nội, Việt Nam
+              </p>
+              <p className="text-primary-200">
+                <strong>Điện thoại:</strong> 0392085583
+              </p>
+              <p className="text-primary-200">
+                <strong>Email:</strong> doanminhdung662@gmail.com
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-primary-700 mt-8 pt-8 text-center text-primary-300">
-          <p>
-            &copy; {new Date().getFullYear()} Công ty Luật ABC. All rights
-            reserved.
+        <div className="border-t border-primary-700 mt-8 pt-8 text-center">
+          <p className="text-primary-200">
+            © {new Date().getFullYear()} SushiLaw. Tất cả quyền được bảo lưu.
           </p>
         </div>
       </div>

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import Banner from "../components/Banner";
 import NewsSidebar from "../components/news/NewsSidebar";
 import NewsCard from "../components/news/NewsCard";
 import NewsDetail from "../components/news/NewsDetail";
@@ -63,12 +62,6 @@ export default function News() {
           content="Cập nhật tin tức pháp luật mới nhất, các vấn đề pháp lý nổi bật và tư vấn pháp luật chuyên sâu từ đội ngũ luật sư giàu kinh nghiệm."
         />
       </Helmet>
-
-      <Banner
-        title="Tin tức pháp luật"
-        description="Cập nhật tin tức pháp luật mới nhất và các vấn đề pháp lý nổi bật"
-        image="/images/news-banner.jpg"
-      />
 
       <div className="container mx-auto px-4 py-12">
         <div className="flex flex-col lg:flex-row gap-8">
