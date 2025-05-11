@@ -77,8 +77,8 @@ export default function Consultation() {
             <div className="bg-white rounded-xl shadow-lg p-6">
               <div className="flex flex-col items-center mb-6">
                 <img
-                  src="https://scontent.fhph2-1.fna.fbcdn.net/v/t39.30808-1/475337726_1330739978152926_1821211828318754549_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=107&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeGDTDUK5crKTBCFHQFlj2DnZOyCz6WkXXhk7ILPpaRdeHMxOuqtkiCwLxK3mFMmZKyfewf-rZNjhBKOh2Cag0d1&_nc_ohc=SdksvRy6vLQQ7kNvwEo-PRJ&_nc_oc=AdmrqF7mI7Gga8tK47cdzgFZo6GomodFtYPxK9qB6pRx2redDa40OZuSQAHr6aHbE4IlT1yrJ_2MXO91Naj3NDLt&_nc_zt=24&_nc_ht=scontent.fhph2-1.fna&_nc_gid=QVY3T39RUd5s_FK4WM8hlQ&oh=00_AfJk4LEFUUZGU2EvFPwEe7hQ1Y-VKcNO9qSaIaR6k9yLzw&oe=68261B63"
-                  alt="Luật sư Lê Thị Thủy Ngân"
+                  src=""
+                  alt=" Lê Thị Thủy Ngân"
                   className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-primary-100"
                 />
                 <h2 className="text-xl font-semibold text-primary-900">
