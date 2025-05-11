@@ -17,9 +17,9 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <img src="/logo.svg" alt="SushiLaw Logo" className="h-10 w-10" />
-              <span className="text-2xl font-bold">SushiLaw</span>
+              <span className="text-2xl font-bold text-text-red">SushiLaw</span>
             </div>
-            <p className="text-primary-200 text-sm">
+            <p className="text-white text-sm">
               Đồng hành cùng bạn trên con đường pháp lý, mang đến giải pháp tư
               vấn pháp luật toàn diện và chuyên nghiệp.
             </p>
@@ -28,7 +28,7 @@ export default function Footer() {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary-200 hover:text-white transition-colors"
+                className="text-white hover:text-accent-500 transition-colors"
               >
                 <FaFacebook className="w-5 h-5" />
               </a>
@@ -36,7 +36,7 @@ export default function Footer() {
                 href="https://youtube.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary-200 hover:text-white transition-colors"
+                className="text-white hover:text-accent-500 transition-colors"
               >
                 <FaYoutube className="w-5 h-5" />
               </a>
@@ -44,7 +44,7 @@ export default function Footer() {
                 href="https://tiktok.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary-200 hover:text-white transition-colors"
+                className="text-white hover:text-accent-500 transition-colors"
               >
                 <FaTiktok className="w-5 h-5" />
               </a>
@@ -52,7 +52,7 @@ export default function Footer() {
                 href="https://zalo.me"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary-200 hover:text-white transition-colors"
+                className="text-white hover:text-accent-500 transition-colors"
               >
                 <SiZalo className="w-5 h-5" />
               </a>
@@ -60,14 +60,14 @@ export default function Footer() {
             <div className="flex flex-col space-y-2">
               <a
                 href="#"
-                className="flex items-center space-x-2 text-primary-200 hover:text-white transition-colors"
+                className="flex items-center space-x-2 text-white hover:text-accent-500 transition-colors"
               >
                 <FaGooglePlay className="w-5 h-5" />
                 <span className="text-sm">Tải ứng dụng trên Google Play</span>
               </a>
               <a
                 href="#"
-                className="flex items-center space-x-2 text-primary-200 hover:text-white transition-colors"
+                className="flex items-center space-x-2 text-white hover:text-accent-500 transition-colors"
               >
                 <FaAppStore className="w-5 h-5" />
                 <span className="text-sm">Tải ứng dụng trên App Store</span>
@@ -77,12 +77,14 @@ export default function Footer() {
 
           {/* Quick Links - Hidden on mobile */}
           <div className="hidden lg:block">
-            <h3 className="text-lg font-semibold mb-4">Liên kết nhanh</h3>
+            <h3 className="text-lg font-semibold mb-4 text-text-red">
+              Liên kết nhanh
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   to="/about"
-                  className="text-primary-200 hover:text-white transition-colors"
+                  className="text-white hover:text-accent-500 transition-colors"
                 >
                   Về chúng tôi
                 </Link>
@@ -90,7 +92,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/services"
-                  className="text-primary-200 hover:text-white transition-colors"
+                  className="text-white hover:text-accent-500 transition-colors"
                 >
                   Dịch vụ
                 </Link>
@@ -98,7 +100,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/news"
-                  className="text-primary-200 hover:text-white transition-colors"
+                  className="text-white hover:text-accent-500 transition-colors"
                 >
                   Tin tức
                 </Link>
@@ -106,7 +108,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/faq"
-                  className="text-primary-200 hover:text-white transition-colors"
+                  className="text-white hover:text-accent-500 transition-colors"
                 >
                   FAQ
                 </Link>
@@ -116,12 +118,14 @@ export default function Footer() {
 
           {/* Services - Hidden on mobile */}
           <div className="hidden lg:block">
-            <h3 className="text-lg font-semibold mb-4">Dịch vụ</h3>
+            <h3 className="text-lg font-semibold mb-4 text-text-red">
+              Dịch vụ
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   to="/services/corporate"
-                  className="text-primary-200 hover:text-white transition-colors"
+                  className="text-white hover:text-accent-500 transition-colors"
                 >
                   Tư vấn doanh nghiệp
                 </Link>
@@ -129,7 +133,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/services/litigation"
-                  className="text-primary-200 hover:text-white transition-colors"
+                  className="text-white hover:text-accent-500 transition-colors"
                 >
                   Tranh tụng
                 </Link>
@@ -137,7 +141,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/services/real-estate"
-                  className="text-primary-200 hover:text-white transition-colors"
+                  className="text-white hover:text-accent-500 transition-colors"
                 >
                   Bất động sản
                 </Link>
@@ -145,7 +149,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/services/intellectual-property"
-                  className="text-primary-200 hover:text-white transition-colors"
+                  className="text-white hover:text-accent-500 transition-colors"
                 >
                   Sở hữu trí tuệ
                 </Link>
@@ -155,25 +159,21 @@ export default function Footer() {
 
           {/* Contact - Hidden on mobile */}
           <div className="hidden lg:block">
-            <h3 className="text-lg font-semibold mb-4">Liên hệ</h3>
+            <h3 className="text-lg font-semibold mb-4 text-text-red">
+              Liên hệ
+            </h3>
             <ul className="space-y-2">
-              <li className="text-primary-200">
+              <li className="text-white">
                 <strong>Địa chỉ:</strong> 123 Đường ABC, Quận XYZ, TP. HCM
               </li>
-              <li className="text-primary-200">
+              <li className="text-white">
                 <strong>Điện thoại:</strong> (028) 1234 5678
               </li>
-              <li className="text-primary-200">
+              <li className="text-white">
                 <strong>Email:</strong> info@sushilaw.vn
               </li>
             </ul>
           </div>
-        </div>
-
-        <div className="border-t border-primary-800 mt-8 pt-8 text-center text-primary-200 text-sm">
-          <p>
-            &copy; {new Date().getFullYear()} SushiLaw. All rights reserved.
-          </p>
         </div>
       </div>
     </footer>

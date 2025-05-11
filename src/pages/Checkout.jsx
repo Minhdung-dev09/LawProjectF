@@ -7,22 +7,10 @@ import { FaLock, FaCreditCard, FaUser, FaMapMarkerAlt } from "react-icons/fa";
 
 const paymentMethods = [
   {
-    id: "credit_card",
-    name: "Thẻ tín dụng",
+    id: "cod",
+    name: "Thanh toán khi nhận hàng",
     icon: FaCreditCard,
-    description: "Thanh toán bằng thẻ Visa, Mastercard",
-  },
-  {
-    id: "bank_transfer",
-    name: "Chuyển khoản ngân hàng",
-    icon: FaCreditCard,
-    description: "Chuyển khoản trực tiếp đến tài khoản ngân hàng",
-  },
-  {
-    id: "momo",
-    name: "Ví MoMo",
-    icon: FaCreditCard,
-    description: "Thanh toán qua ví điện tử MoMo",
+    description: "Kiểm tra hàng và thanh toán trực tiếp khi nhận hàng",
   },
 ];
 
@@ -36,7 +24,7 @@ export default function Checkout() {
     phone: "",
     address: "",
     city: "",
-    paymentMethod: "credit_card",
+    paymentMethod: "cod",
   });
 
   const handleInputChange = (e) => {
@@ -240,30 +228,20 @@ export default function Checkout() {
                 <h3 className="text-lg font-medium text-gray-900 mb-4">
                   Phương thức thanh toán
                 </h3>
-                <div className="space-y-4">
-                  {paymentMethods.map((method) => (
-                    <label
-                      key={method.id}
-                      className="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50"
-                    >
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value={method.id}
-                        checked={formData.paymentMethod === method.id}
-                        onChange={handleInputChange}
-                        className="h-4 w-4 text-primary-600 focus:ring-primary-500"
-                      />
-                      <div className="ml-3">
-                        <span className="block text-sm font-medium text-gray-900">
-                          {method.name}
-                        </span>
-                        <span className="block text-sm text-gray-500">
-                          {method.description}
-                        </span>
-                      </div>
-                    </label>
-                  ))}
+                <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <FaCreditCard className="h-6 w-6 text-gray-600" />
+                    </div>
+                    <div className="ml-4">
+                      <h4 className="text-base font-medium text-gray-900">
+                        Thanh toán khi nhận hàng
+                      </h4>
+                      <p className="text-sm text-gray-500">
+                        Kiểm tra hàng và thanh toán trực tiếp khi nhận hàng
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 

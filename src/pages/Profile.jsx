@@ -78,7 +78,7 @@ const Profile = () => {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           {/* Header Section */}
           <div className="relative">
-            <div className="h-32 bg-[#1a365d]"></div>
+            <div className="h-32 bg-gray-700"></div>
             <div className="absolute -bottom-16 left-8">
               <div className="w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-white shadow-lg">
                 <img
@@ -102,7 +102,7 @@ const Profile = () => {
               {!isEditing && (
                 <button
                   onClick={handleEdit}
-                  className="flex items-center px-4 py-2 bg-[#1a365d] text-white rounded-lg hover:bg-[#2c5282] transition-colors"
+                  className="flex items-center px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
                 >
                   <FaEdit className="mr-2" />
                   Edit Profile
@@ -127,7 +127,7 @@ const Profile = () => {
                         name="name"
                         value={editedUser.name}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1a365d] focus:border-transparent"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -139,7 +139,7 @@ const Profile = () => {
                         name="email"
                         value={editedUser.email}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1a365d] focus:border-transparent"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -151,7 +151,7 @@ const Profile = () => {
                         name="phone"
                         value={editedUser.phone}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1a365d] focus:border-transparent"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -163,14 +163,14 @@ const Profile = () => {
                         name="address"
                         value={editedUser.address}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1a365d] focus:border-transparent"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                       />
                     </div>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 rounded-full bg-[#1a365d] flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
                         <FaUser className="text-white" />
                       </div>
                       <div>
@@ -181,7 +181,7 @@ const Profile = () => {
                       </div>
                     </div>
                     <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 rounded-full bg-[#1a365d] flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
                         <FaEnvelope className="text-white" />
                       </div>
                       <div>
@@ -192,7 +192,7 @@ const Profile = () => {
                       </div>
                     </div>
                     <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 rounded-full bg-[#1a365d] flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
                         <FaPhone className="text-white" />
                       </div>
                       <div>
@@ -203,7 +203,7 @@ const Profile = () => {
                       </div>
                     </div>
                     <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 rounded-full bg-[#1a365d] flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
                         <FaMapMarkerAlt className="text-white" />
                       </div>
                       <div>
@@ -233,7 +233,7 @@ const Profile = () => {
                         name="currentPassword"
                         value={passwordData.currentPassword}
                         onChange={handlePasswordChange}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1a365d] focus:border-transparent"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -245,7 +245,7 @@ const Profile = () => {
                         name="newPassword"
                         value={passwordData.newPassword}
                         onChange={handlePasswordChange}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1a365d] focus:border-transparent"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -257,7 +257,7 @@ const Profile = () => {
                         name="confirmPassword"
                         value={passwordData.confirmPassword}
                         onChange={handlePasswordChange}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1a365d] focus:border-transparent"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                       />
                     </div>
                     <div className="flex justify-end space-x-4">
@@ -270,7 +270,7 @@ const Profile = () => {
                       </button>
                       <button
                         type="submit"
-                        className="px-6 py-2 bg-[#1a365d] text-white rounded-lg hover:bg-[#2c5282] transition-colors"
+                        className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
                       >
                         Update Password
                       </button>
@@ -291,7 +291,7 @@ const Profile = () => {
                     </button>
                     <button
                       onClick={handleSave}
-                      className="px-6 py-2 bg-[#1a365d] text-white rounded-lg hover:bg-[#2c5282] transition-colors"
+                      className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
                     >
                       Save Changes
                     </button>
@@ -299,7 +299,7 @@ const Profile = () => {
                 ) : (
                   <button
                     onClick={() => setShowPasswordForm(!showPasswordForm)}
-                    className="flex items-center px-6 py-2 bg-[#1a365d] text-white rounded-lg hover:bg-[#2c5282] transition-colors"
+                    className="flex items-center px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
                   >
                     <FaLock className="mr-2" />
                     Change Password
