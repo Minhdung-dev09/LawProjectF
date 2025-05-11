@@ -39,7 +39,7 @@ export default function Home() {
       <Banner />
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8">
           <div className="flex-1">
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-primary-800 mb-6">
@@ -190,7 +190,10 @@ export default function Home() {
             </section>
           </div>
 
-          <AdSidebar />
+          {/* Sidebar - Only visible on desktop (lg and above) */}
+          <div className="hidden lg:block">
+            <AdSidebar />
+          </div>
         </div>
       </div>
     </div>
