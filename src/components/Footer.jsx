@@ -1,39 +1,98 @@
 import { Link } from "react-router-dom";
+import {
+  FaFacebook,
+  FaYoutube,
+  FaTiktok,
+  FaGooglePlay,
+  FaAppStore,
+} from "react-icons/fa";
+import { SiZalo } from "react-icons/si";
 
 export default function Footer() {
   return (
-    <footer className="bg-primary-800 text-white">
+    <footer className="bg-primary-900 text-white">
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Company Info */}
-          <div>
-            <h3 className="text-xl font-bold mb-4 font-heading">SushiLaw</h3>
-            <p className="text-primary-200 mb-4 relative">
-              "Công lý không chỉ là lý thuyết, mà là hành động - Chúng tôi biến
-              lý thuyết thành thực tế"
-              <span className="text-red-500 text-sm ml-2">Mrs. LTT-Ngan</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Logo and Description - Always visible */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <img src="/logo.svg" alt="SushiLaw Logo" className="h-10 w-10" />
+              <span className="text-2xl font-bold">SushiLaw</span>
+            </div>
+            <p className="text-primary-200 text-sm">
+              Đồng hành cùng bạn trên con đường pháp lý, mang đến giải pháp tư
+              vấn pháp luật toàn diện và chuyên nghiệp.
             </p>
-            <p className="text-primary-200">
-              Địa chỉ: Hà Nội, Việt Nam
-              <br />
-              Điện thoại: 0392085583
-              <br />
-              Email: doanminhdung662@gmail.com
-            </p>
+            <div className="flex space-x-4">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-200 hover:text-white transition-colors"
+              >
+                <FaFacebook className="w-5 h-5" />
+              </a>
+              <a
+                href="https://youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-200 hover:text-white transition-colors"
+              >
+                <FaYoutube className="w-5 h-5" />
+              </a>
+              <a
+                href="https://tiktok.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-200 hover:text-white transition-colors"
+              >
+                <FaTiktok className="w-5 h-5" />
+              </a>
+              <a
+                href="https://zalo.me"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-200 hover:text-white transition-colors"
+              >
+                <SiZalo className="w-5 h-5" />
+              </a>
+            </div>
+            <div className="flex flex-col space-y-2">
+              <a
+                href="#"
+                className="flex items-center space-x-2 text-primary-200 hover:text-white transition-colors"
+              >
+                <FaGooglePlay className="w-5 h-5" />
+                <span className="text-sm">Tải ứng dụng trên Google Play</span>
+              </a>
+              <a
+                href="#"
+                className="flex items-center space-x-2 text-primary-200 hover:text-white transition-colors"
+              >
+                <FaAppStore className="w-5 h-5" />
+                <span className="text-sm">Tải ứng dụng trên App Store</span>
+              </a>
+            </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-xl font-bold mb-4 font-heading">
-              Liên kết nhanh
-            </h3>
+          {/* Quick Links - Hidden on mobile */}
+          <div className="hidden lg:block">
+            <h3 className="text-lg font-semibold mb-4">Liên kết nhanh</h3>
             <ul className="space-y-2">
               <li>
                 <Link
-                  to="/"
+                  to="/about"
                   className="text-primary-200 hover:text-white transition-colors"
                 >
-                  Trang chủ
+                  Về chúng tôi
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/services"
+                  className="text-primary-200 hover:text-white transition-colors"
+                >
+                  Dịch vụ
                 </Link>
               </li>
               <li>
@@ -42,22 +101,6 @@ export default function Footer() {
                   className="text-primary-200 hover:text-white transition-colors"
                 >
                   Tin tức
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/shop"
-                  className="text-primary-200 hover:text-white transition-colors"
-                >
-                  Cửa hàng
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/consultation"
-                  className="text-primary-200 hover:text-white transition-colors"
-                >
-                  Tư vấn
                 </Link>
               </li>
               <li>
@@ -71,48 +114,65 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
-          <div>
-            <h3 className="text-xl font-bold mb-4 font-heading">Dịch vụ</h3>
+          {/* Services - Hidden on mobile */}
+          <div className="hidden lg:block">
+            <h3 className="text-lg font-semibold mb-4">Dịch vụ</h3>
             <ul className="space-y-2">
               <li>
-                <span className="text-primary-200">Tư vấn pháp lý</span>
+                <Link
+                  to="/services/corporate"
+                  className="text-primary-200 hover:text-white transition-colors"
+                >
+                  Tư vấn doanh nghiệp
+                </Link>
               </li>
               <li>
-                <span className="text-primary-200">Đại diện pháp lý</span>
+                <Link
+                  to="/services/litigation"
+                  className="text-primary-200 hover:text-white transition-colors"
+                >
+                  Tranh tụng
+                </Link>
               </li>
               <li>
-                <span className="text-primary-200">Soạn thảo hợp đồng</span>
+                <Link
+                  to="/services/real-estate"
+                  className="text-primary-200 hover:text-white transition-colors"
+                >
+                  Bất động sản
+                </Link>
               </li>
               <li>
-                <span className="text-primary-200">Tư vấn doanh nghiệp</span>
+                <Link
+                  to="/services/intellectual-property"
+                  className="text-primary-200 hover:text-white transition-colors"
+                >
+                  Sở hữu trí tuệ
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Contact */}
-          <div>
-            <h3 className="text-xl font-bold mb-4 font-heading">Liên hệ</h3>
-            <p className="text-primary-200 mb-4">
-              Luật sư Ngân - Cử nhân Luật Đại học Quốc gia Hà Nội
-            </p>
-            <div className="space-y-2">
-              <p className="text-primary-200">
-                <strong>Địa chỉ:</strong> Hà Nội, Việt Nam
-              </p>
-              <p className="text-primary-200">
-                <strong>Điện thoại:</strong> 0392085583
-              </p>
-              <p className="text-primary-200">
-                <strong>Email:</strong> doanminhdung662@gmail.com
-              </p>
-            </div>
+          {/* Contact - Hidden on mobile */}
+          <div className="hidden lg:block">
+            <h3 className="text-lg font-semibold mb-4">Liên hệ</h3>
+            <ul className="space-y-2">
+              <li className="text-primary-200">
+                <strong>Địa chỉ:</strong> 123 Đường ABC, Quận XYZ, TP. HCM
+              </li>
+              <li className="text-primary-200">
+                <strong>Điện thoại:</strong> (028) 1234 5678
+              </li>
+              <li className="text-primary-200">
+                <strong>Email:</strong> info@sushilaw.vn
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div className="border-t border-primary-700 mt-8 pt-8 text-center">
-          <p className="text-primary-200">
-            © {new Date().getFullYear()} SushiLaw. Tất cả quyền được bảo lưu.
+        <div className="border-t border-primary-800 mt-8 pt-8 text-center text-primary-200 text-sm">
+          <p>
+            &copy; {new Date().getFullYear()} SushiLaw. All rights reserved.
           </p>
         </div>
       </div>
