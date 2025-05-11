@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  XMarkIcon,
+  UserCircleIcon,
+  ShoppingCartIcon,
+  ClipboardDocumentListIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/24/outline";
 
 const navigation = [
   { name: "Trang chủ", href: "/" },
@@ -13,6 +20,7 @@ const navigation = [
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const location = useLocation();
 
   return (
@@ -34,27 +42,72 @@ export default function Navbar() {
           </div>
 
           {/* Desktop menu */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-center space-x-4">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                    location.pathname === item.href
-                      ? "text-primary-600 bg-primary-50"
-                      : "text-gray-600 hover:text-primary-600 hover:bg-primary-50"
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              ))}
+          <div className="hidden md:flex items-center space-x-4">
+            {navigation.map((item) => (
               <Link
-                to="/cart"
-                className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
+                key={item.name}
+                to={item.href}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                  location.pathname === item.href
+                    ? "text-primary-600 bg-primary-50"
+                    : "text-gray-600 hover:text-primary-600 hover:bg-primary-50"
+                }`}
               >
-                Giỏ hàng
+                {item.name}
               </Link>
+            ))}
+
+            {/* User Menu */}
+            <div className="relative">
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200"
+              >
+                <UserCircleIcon className="h-6 w-6" />
+                <span>Tài khoản</span>
+                <ChevronDownIcon
+                  className={`h-4 w-4 transition-transform duration-200 ${
+                    userMenuOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {/* Dropdown Menu */}
+              <AnimatePresence>
+                {userMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50"
+                  >
+                    <Link
+                      to="/profile"
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      <UserCircleIcon className="h-5 w-5 mr-2" />
+                      Thông tin cá nhân
+                    </Link>
+                    <Link
+                      to="/cart"
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      <ShoppingCartIcon className="h-5 w-5 mr-2" />
+                      Giỏ hàng
+                    </Link>
+                    <Link
+                      to="/orders"
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      <ClipboardDocumentListIcon className="h-5 w-5 mr-2" />
+                      Đơn hàng của tôi
+                    </Link>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 
@@ -100,11 +153,28 @@ export default function Navbar() {
                 </Link>
               ))}
               <Link
-                to="/cart"
-                className="block px-3 py-2 rounded-md text-base font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50"
+                to="/profile"
+                className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-primary-600 hover:bg-primary-50"
                 onClick={() => setMobileMenuOpen(false)}
               >
+                <UserCircleIcon className="h-5 w-5 mr-2" />
+                Thông tin cá nhân
+              </Link>
+              <Link
+                to="/cart"
+                className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-primary-600 hover:bg-primary-50"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <ShoppingCartIcon className="h-5 w-5 mr-2" />
                 Giỏ hàng
+              </Link>
+              <Link
+                to="/orders"
+                className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-primary-600 hover:bg-primary-50"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <ClipboardDocumentListIcon className="h-5 w-5 mr-2" />
+                Đơn hàng của tôi
               </Link>
             </div>
           </motion.div>
