@@ -52,15 +52,15 @@ export default function Banner() {
             alt={slides[currentSlide].title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-40" />
+          <div className="absolute inset-0 bg-primary-800 bg-opacity-60" />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center text-white px-4">
+            <div className="text-center px-4">
               <motion.h1
                 key={slides[currentSlide].title}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0 }}
-                className="text-4xl md:text-5xl font-bold mb-4"
+                className="text-4xl md:text-5xl font-bold mb-4 font-serif text-white"
               >
                 {slides[currentSlide].title}
               </motion.h1>
@@ -69,7 +69,7 @@ export default function Banner() {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
-                className="text-xl md:text-2xl"
+                className="text-xl md:text-2xl text-white"
               >
                 {slides[currentSlide].description}
               </motion.p>
