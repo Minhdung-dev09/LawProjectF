@@ -1,55 +1,16 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
-
-const initialCartItems = [
-  {
-    id: 1,
-    name: "Sách Luật Doanh Nghiệp 2024",
-    price: 250000,
-    quantity: 1,
-    image:
-      "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 2,
-    name: "Tài liệu Hướng dẫn Thủ tục Hành chính",
-    price: 180000,
-    quantity: 2,
-    image:
-      "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-  },
-];
+import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "../contexts/CartContext";
+import { FaTrash, FaShoppingCart } from "react-icons/fa";
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState(initialCartItems);
+  const navigate = useNavigate();
+  const { cartItems, updateQuantity, removeFromCart, getTotal } = useCart();
   const [isCheckout, setIsCheckout] = useState(false);
 
-  const updateQuantity = (id, newQuantity) => {
-    if (newQuantity < 1) return;
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
-  const removeItem = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
-  };
-
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-
   const handleCheckout = () => {
-    setIsCheckout(true);
-    // Here you would typically handle payment processing
-    setTimeout(() => {
-      setCartItems([]);
-      setIsCheckout(false);
-    }, 2000);
+    navigate("/checkout");
   };
 
   return (
@@ -58,7 +19,8 @@ export default function Cart() {
 
       {cartItems.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-xl text-primary-600 mb-4">
+          <FaShoppingCart className="mx-auto text-6xl text-gray-300 mb-4" />
+          <p className="text-xl text-gray-600 mb-4">
             Giỏ hàng của bạn đang trống
           </p>
           <Link
@@ -114,10 +76,10 @@ export default function Cart() {
                       </button>
                     </div>
                     <button
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeFromCart(item.id)}
                       className="text-red-500 hover:text-red-700"
                     >
-                      Xóa
+                      <FaTrash />
                     </button>
                   </div>
                 </motion.div>
@@ -131,7 +93,7 @@ export default function Cart() {
                 Tổng cộng:
               </span>
               <span className="text-xl font-bold text-primary-800">
-                {total.toLocaleString("vi-VN")}đ
+                {getTotal().toLocaleString("vi-VN")}đ
               </span>
             </div>
             <button
@@ -143,7 +105,7 @@ export default function Cart() {
                   : "bg-primary-600 hover:bg-primary-700"
               }`}
             >
-              {isCheckout ? "Đang xử lý..." : "Thanh toán"}
+              {isCheckout ? "Đang xử lý..." : "Tiến hành thanh toán"}
             </button>
           </div>
         </>

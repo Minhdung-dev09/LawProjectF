@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useCart } from "../contexts/CartContext";
 
 const categories = ["Tất cả", "Sách", "Tài liệu", "Khóa học"];
 
@@ -47,6 +48,7 @@ export default function Shop() {
   const [selectedCategory, setSelectedCategory] = useState("Tất cả");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("newest");
+  const { addToCart } = useCart();
 
   const filteredProducts = products
     .filter((product) => {
@@ -110,7 +112,7 @@ export default function Shop() {
               </div>
               <button
                 onClick={() => {
-                  // Add to cart functionality
+                  addToCart(selectedProduct);
                   alert("Đã thêm vào giỏ hàng!");
                 }}
                 className="w-full bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors"
