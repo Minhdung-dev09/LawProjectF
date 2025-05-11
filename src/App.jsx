@@ -3,6 +3,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { CartProvider } from "./contexts/CartContext";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
+import Footer from "./components/Footer";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import Consultation from "./pages/Consultation";
@@ -45,6 +46,7 @@ function App() {
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/checkout/success" element={<CheckoutSuccess />} />
             </Routes>
+            <Footer />
           </div>
         </Router>
       </CartProvider>
