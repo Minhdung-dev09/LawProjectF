@@ -19,6 +19,7 @@ import Orders from "./pages/Orders";
 import MyConsultations from "./pages/MyConsultations";
 import Checkout from "./pages/Checkout";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
+import MessengerChat from './components/MessengerChat';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
               <Route path="/checkout/success" element={<CheckoutSuccess />} />
             </Routes>
             <Footer />
+            <MessengerChat pageId="106107384554772" />
           </div>
         </Router>
       </CartProvider>
