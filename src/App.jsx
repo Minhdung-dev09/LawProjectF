@@ -48,7 +48,7 @@ function App() {
               <Route path="/checkout/success" element={<CheckoutSuccess />} />
             </Routes>
             <Footer />
-            <MessengerChat pageId="106107384554772" />
+            <MessengerChat pageId="100083272317932" />
           </div>
         </Router>
       </CartProvider>
