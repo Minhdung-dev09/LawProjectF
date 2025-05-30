@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <div>
       <Helmet>
-        <title>Trang chủ - Công ty Luật ABC</title>
+        <title>Trang chủ - Tìm hiểu và Tư vấn các vấn đề về Pháp luật - Pháp lý</title>
         <meta
           name="description"
           content="Công ty Luật ABC - Đơn vị tư vấn pháp lý hàng đầu, cung cấp các dịch vụ tư vấn pháp luật, đại diện pháp lý và soạn thảo hợp đồng."
