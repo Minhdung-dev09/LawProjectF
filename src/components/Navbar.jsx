@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -12,6 +12,8 @@ import {
   FaChevronDown,
   FaChevronUp,
 } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { login, logout } from "../slices/authSlice";
 
 const navigation = [
   { name: "Trang chủ", href: "/" },
@@ -25,18 +27,36 @@ export default function Navbar() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserOptionsOpen, setIsUserOptionsOpen] = useState(false);
-  // Mock user state
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [user, setUser] = useState({
-    name: "Nguyễn Văn A",
-    email: "example@email.com",
-  });
+
   const location = useLocation();
+  const dispatch = useDispatch();
+  const { isLoggedIn, user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    // load auth info khi mount
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      const userString = localStorage.getItem("user");
+      if (userString) {
+        try {
+          dispatch(login(JSON.parse(userString)));
+        } catch {
+          dispatch(logout());
+        }
+      }
+    } else {
+      dispatch(logout());
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUser(null);
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
+    dispatch(logout());
     setIsUserMenuOpen(false);
+    setIsMobileMenuOpen(false);
+    setIsUserOptionsOpen(false);
   };
 
   return (
@@ -77,7 +97,10 @@ export default function Navbar() {
                   <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
                     <FaUser className="h-4 w-4 text-primary-600" />
                   </div>
-                  <span className="text-sm font-medium">{user?.name}</span>
+                  {/* Hiển thị username */}
+                  <span className="text-sm font-medium">
+                    {user?.username || user?.name}
+                  </span>
                 </button>
 
                 <AnimatePresence>

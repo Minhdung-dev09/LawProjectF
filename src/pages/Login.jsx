@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaLock, FaEnvelope, FaBalanceScale } from "react-icons/fa";
+import axios from "axios";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -10,10 +11,23 @@ export default function Login() {
     password: "",
   });
 
-  const handleSubmit = (e) => {
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log(formData);
+    setError(""); 
+    try {
+      const response = await axios.post("http://localhost:5001/api/users/auth", formData);
+      const { token, user } = response.data;
+
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      navigate("/");
+    } catch (err) {
+      setError(err.response?.data?.message || "Đăng nhập thất bại");
+    }
   };
 
   const handleChange = (e) => {
@@ -57,6 +71,10 @@ export default function Login() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <p className="text-sm text-red-600 text-center">{error}</p>
+              )}
+
               <div>
                 <label
                   htmlFor="email"

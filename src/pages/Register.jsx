@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   FaUser,
   FaEnvelope,
@@ -12,17 +13,76 @@ import {
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    fullName: "",
+    username: "",
     email: "",
     phone: "",
     password: "",
     confirmPassword: "",
   });
 
-  const handleSubmit = (e) => {
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle registration logic here
-    console.log(formData);
+    setError(null);
+    setSuccess(null);
+
+    // Basic validation
+    if (formData.password !== formData.confirmPassword) {
+      setError("Mật khẩu và xác nhận mật khẩu không khớp.");
+      return;
+    }
+
+    if (!formData.email.match(/^\S+@\S+\.\S+$/)) {
+      setError("Email không hợp lệ.");
+      return;
+    }
+
+    if (!formData.phone.match(/^[0-9\s\+\-()]{7,}$/)) {
+      setError("Số điện thoại không hợp lệ.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Gửi dữ liệu lên backend API
+      const response = await fetch("http://localhost:5001/api/users/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Đăng ký thất bại. Vui lòng thử lại.");
+      } else {
+        setSuccess("Đăng ký thành công! Bạn có thể đăng nhập ngay.");
+        navigate("/login"); // Redirect to login page after successful registration
+        setFormData({
+          username: "", 
+          email: "",
+          phone: "",
+          password: "",
+          confirmPassword: "",
+        });
+      }
+    } catch (err) {
+      setError("Có lỗi xảy ra. Vui lòng thử lại.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -67,10 +127,18 @@ export default function Register() {
               </p>
             </div>
 
+            {error && (
+              <p className="mb-4 text-red-600 font-semibold text-center">{error}</p>
+            )}
+            {success && (
+              <p className="mb-4 text-green-600 font-semibold text-center">{success}</p>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Các input fields giữ nguyên như bạn đã có */}
               <div>
                 <label
-                  htmlFor="fullName"
+                  htmlFor="username"
                   className="block text-sm font-medium text-primary-700 mb-1"
                 >
                   Họ và tên
@@ -81,9 +149,9 @@ export default function Register() {
                   </div>
                   <input
                     type="text"
-                    id="fullName"
-                    name="fullName"
-                    value={formData.fullName}
+                    id="username"
+                    name="username"
+                    value={formData.username}
                     onChange={handleChange}
                     required
                     className="w-full pl-10 pr-4 py-2 border border-primary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
@@ -221,9 +289,10 @@ export default function Register() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
+                disabled={loading}
                 className="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 transition-colors mt-6"
               >
-                Đăng ký
+                {loading ? "Đang đăng ký..." : "Đăng ký"}
               </motion.button>
             </form>
 

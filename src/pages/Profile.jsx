@@ -8,15 +8,21 @@ import {
   FaLock,
   FaEdit,
 } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser as setUserRedux } from "../slices/authSlice";
 
 const Profile = () => {
-  const [user, setUser] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+84 123 456 789",
-    address: "123 Street, City, Country",
-    avatar: "https://via.placeholder.com/150",
-  });
+  const dispatch = useDispatch();
+  const { user: reduxUser } = useSelector((state) => state.auth);
+  const [user, setUser] = useState(
+    reduxUser || {
+      name: "John Doe",
+      email: "john.doe@example.com",
+      phone: "+84 123 456 789",
+      address: "123 Street, City, Country",
+      avatar: "https://via.placeholder.com/150",
+    }
+  );
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState(user);
@@ -34,6 +40,7 @@ const Profile = () => {
 
   const handleSave = () => {
     setUser(editedUser);
+    dispatch(setUserRedux(editedUser));
     setIsEditing(false);
   };
 
