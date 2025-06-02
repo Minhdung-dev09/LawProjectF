@@ -1,13 +1,75 @@
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { news, newsCategories } from "../data";
+import { newsCategories } from "../data";
 
 export default function NewsDetail() {
   const { id } = useParams();
-  const article = news.find((n) => n.id === Number(id));
-  const category = newsCategories.find((cat) => cat.slug === article?.category);
+  const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`http://localhost:5001/api/news/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch article');
+        }
+        const data = await response.json();
+        // Transform the data to match the frontend structure
+        const transformedArticle = {
+          id: data._id,
+          title: data.title || 'Untitled',
+          excerpt: data.excerpt || '',
+          content: data.content || '',
+          image: data.image || '/default-news-image.jpg',
+          category: data.category || 'uncategorized',
+          date: new Date(data.createdAt).toLocaleDateString('vi-VN'),
+          author: data.author?.username || 'Anonymous',
+          views: data.views || 0,
+          tags: data.tags || []
+        };
+        setArticle(transformedArticle);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticle();
+  }, [id]);
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-8 text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+        <p className="mt-4 text-primary-600">Đang tải bài viết...</p>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-8 text-center">
+        <p className="text-red-600">Có lỗi xảy ra: {error}</p>
+        <Link
+          to="/news"
+          className="inline-block mt-4 text-primary-600 hover:text-primary-700"
+        >
+          Quay lại danh sách tin tức
+        </Link>
+      </div>
+    );
+  }
+
+  // Not found state
   if (!article) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8 text-center">
@@ -23,6 +85,8 @@ export default function NewsDetail() {
       </div>
     );
   }
+
+  const category = newsCategories.find((cat) => cat.slug === article.category);
 
   return (
     <>
