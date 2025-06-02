@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import NewsSidebar from "../components/news/NewsSidebar";
 import NewsCard from "../components/news/NewsCard";
 import NewsDetail from "../components/news/NewsDetail";
-import { news, newsCategories } from "../data";
+import { newsCategories } from "../data";
 
 export default function News() {
   const { id } = useParams();
@@ -13,7 +13,44 @@ export default function News() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [news, setNews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const itemsPerPage = 8; // 2 items per row * 4 rows
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:5001/api/news/');
+        if (!response.ok) {
+          throw new Error('Failed to fetch news');
+        }
+        const data = await response.json();
+        // Transform the data to match the frontend structure
+        const transformedData = data.map(item => ({
+          id: item._id,
+          title: item.title || 'Untitled',
+          excerpt: item.excerpt || '',
+          content: item.content || '',
+          image: item.image || '/default-news-image.jpg',
+          category: item.category || 'uncategorized',
+          date: new Date(item.createdAt).toLocaleDateString('vi-VN'),
+          author: item.author?.username || 'Anonymous',
+          views: item.views || 0,
+          tags: item.tags || []
+        }));
+        setNews(transformedData);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
 
   // Tìm bài viết theo ID từ URL
   const selectedArticle = news.find((article) => article.id === parseInt(id));
@@ -38,6 +75,31 @@ export default function News() {
     setCurrentPage(pageNumber);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  // Nếu đang loading
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-12 text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+        <p className="mt-4 text-primary-600">Đang tải tin tức...</p>
+      </div>
+    );
+  }
+
+  // Nếu có lỗi
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-12 text-center">
+        <p className="text-red-600">Có lỗi xảy ra: {error}</p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+        >
+          Thử lại
+        </button>
+      </div>
+    );
+  }
 
   // Nếu có ID và tìm thấy bài viết, hiển thị trang chi tiết
   if (id && selectedArticle) {

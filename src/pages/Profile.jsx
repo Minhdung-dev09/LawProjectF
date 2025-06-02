@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import {
   FaUser,
@@ -8,24 +8,16 @@ import {
   FaLock,
   FaEdit,
 } from "react-icons/fa";
-import { useSelector, useDispatch } from "react-redux";
-import { setUser as setUserRedux } from "../slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const dispatch = useDispatch();
-  const { user: reduxUser } = useSelector((state) => state.auth);
-  const [user, setUser] = useState(
-    reduxUser || {
-      name: "John Doe",
-      email: "john.doe@example.com",
-      phone: "+84 123 456 789",
-      address: "123 Street, City, Country",
-      avatar: "https://via.placeholder.com/150",
-    }
-  );
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [isEditing, setIsEditing] = useState(false);
-  const [editedUser, setEditedUser] = useState(user);
+  const [editedUser, setEditedUser] = useState(null);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
@@ -33,15 +25,65 @@ const Profile = () => {
     confirmPassword: "",
   });
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+
+        const response = await fetch("http://localhost:5001/api/users/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Không thể lấy thông tin hồ sơ");
+        }
+
+        const userData = await response.json();
+        setUser(userData);
+        setEditedUser(userData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, [navigate]);
+
   const handleEdit = () => {
     setIsEditing(true);
     setEditedUser(user);
   };
 
-  const handleSave = () => {
-    setUser(editedUser);
-    dispatch(setUserRedux(editedUser));
-    setIsEditing(false);
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch("http://localhost:5001/api/users/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(editedUser),
+      });
+
+      if (!response.ok) {
+        throw new Error("Cập nhật hồ sơ thất bại");
+      }
+
+      const updatedUser = await response.json();
+      setUser(updatedUser);
+      setIsEditing(false);
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   const handleCancel = () => {
@@ -65,45 +107,69 @@ const Profile = () => {
     }));
   };
 
-  const handlePasswordSubmit = (e) => {
+  const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    setShowPasswordForm(false);
-    setPasswordData({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch("http://localhost:5001/api/users/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(passwordData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Đổi mật khẩu thất bại");
+      }
+
+      setShowPasswordForm(false);
+      setPasswordData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (err) {
+      setError(err.message);
+    }
   };
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Đang tải...</div>;
+  }
+
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
+  }
+
+  if (!user) {
+    return <div className="min-h-screen flex items-center justify-center">Không có dữ liệu người dùng</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>Profile | Law Firm</title>
+        <title>Hồ sơ | Văn phòng Luật</title>
       </Helmet>
 
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-          {/* Header Section */}
+          {/* Header */}
           <div className="relative">
             <div className="h-32 bg-gray-700"></div>
             <div className="absolute -bottom-16 left-8">
               <div className="w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-white shadow-lg">
-                <img
-                  src={user.avatar}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
+                <img src={user.image} alt="Ảnh đại diện" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
 
-          {/* Profile Content */}
+          {/* Nội dung hồ sơ */}
           <div className="pt-20 pb-8 px-8">
             <div className="flex justify-between items-start mb-8">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">
-                  {user.name}
-                </h1>
+                <h1 className="text-3xl font-bold text-gray-900">{user.username}</h1>
                 <p className="text-gray-600 mt-1">{user.email}</p>
               </div>
               {!isEditing && (
@@ -112,35 +178,29 @@ const Profile = () => {
                   className="flex items-center px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
                 >
                   <FaEdit className="mr-2" />
-                  Edit Profile
+                  Chỉnh sửa
                 </button>
               )}
             </div>
 
             <div className="space-y-8">
-              {/* Personal Information */}
+              {/* Thông tin cá nhân */}
               <div className="bg-gray-50 rounded-xl p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">
-                  Personal Information
-                </h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-6">Thông tin cá nhân</h2>
                 {isEditing ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Name
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Họ tên</label>
                       <input
                         type="text"
                         name="name"
-                        value={editedUser.name}
+                        value={user.username}
                         onChange={handleChange}
                         className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Email
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                       <input
                         type="email"
                         name="email"
@@ -150,25 +210,11 @@ const Profile = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Phone
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Số điện thoại</label>
                       <input
                         type="tel"
                         name="phone"
                         value={editedUser.phone}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Address
-                      </label>
-                      <input
-                        type="text"
-                        name="address"
-                        value={editedUser.address}
                         onChange={handleChange}
                         className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                       />
@@ -181,10 +227,8 @@ const Profile = () => {
                         <FaUser className="text-white" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-medium text-gray-500">
-                          Name
-                        </h3>
-                        <p className="text-gray-900">{user.name}</p>
+                        <h3 className="text-sm font-medium text-gray-500">Họ tên</h3>
+                        <p className="text-gray-900">{user.username}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-4">
@@ -192,9 +236,7 @@ const Profile = () => {
                         <FaEnvelope className="text-white" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-medium text-gray-500">
-                          Email
-                        </h3>
+                        <h3 className="text-sm font-medium text-gray-500">Email</h3>
                         <p className="text-gray-900">{user.email}</p>
                       </div>
                     </div>
@@ -203,9 +245,7 @@ const Profile = () => {
                         <FaPhone className="text-white" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-medium text-gray-500">
-                          Phone
-                        </h3>
+                        <h3 className="text-sm font-medium text-gray-500">Số điện thoại</h3>
                         <p className="text-gray-900">{user.phone}</p>
                       </div>
                     </div>
@@ -213,28 +253,18 @@ const Profile = () => {
                       <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
                         <FaMapMarkerAlt className="text-white" />
                       </div>
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-500">
-                          Address
-                        </h3>
-                        <p className="text-gray-900">{user.address}</p>
-                      </div>
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Password Section */}
+              {/* Đổi mật khẩu */}
               {showPasswordForm && (
                 <div className="bg-gray-50 rounded-xl p-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-6">
-                    Change Password
-                  </h2>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-6">Đổi mật khẩu</h2>
                   <form onSubmit={handlePasswordSubmit} className="space-y-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Current Password
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Mật khẩu hiện tại</label>
                       <input
                         type="password"
                         name="currentPassword"
@@ -244,9 +274,7 @@ const Profile = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        New Password
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Mật khẩu mới</label>
                       <input
                         type="password"
                         name="newPassword"
@@ -256,9 +284,7 @@ const Profile = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Confirm New Password
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Xác nhận mật khẩu mới</label>
                       <input
                         type="password"
                         name="confirmPassword"
@@ -273,20 +299,20 @@ const Profile = () => {
                         onClick={() => setShowPasswordForm(false)}
                         className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                       >
-                        Cancel
+                        Hủy
                       </button>
                       <button
                         type="submit"
                         className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
                       >
-                        Update Password
+                        Cập nhật mật khẩu
                       </button>
                     </div>
                   </form>
                 </div>
               )}
 
-              {/* Action Buttons */}
+              {/* Các nút thao tác */}
               <div className="flex justify-end space-x-4">
                 {isEditing ? (
                   <>
@@ -294,13 +320,13 @@ const Profile = () => {
                       onClick={handleCancel}
                       className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                     >
-                      Cancel
+                      Hủy
                     </button>
                     <button
                       onClick={handleSave}
                       className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
                     >
-                      Save Changes
+                      Lưu thay đổi
                     </button>
                   </>
                 ) : (
@@ -309,7 +335,7 @@ const Profile = () => {
                     className="flex items-center px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
                   >
                     <FaLock className="mr-2" />
-                    Change Password
+                    Đổi mật khẩu
                   </button>
                 )}
               </div>

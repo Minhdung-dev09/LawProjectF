@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useState, useEffect } from "react";
 import Banner from "../components/Banner";
 import AdSidebar from "../components/AdSidebar";
 import WelcomePopup from "../components/WelcomePopup";
-import { news } from "../data";
 
 const features = [
   {
@@ -25,6 +25,44 @@ const features = [
 ];
 
 export default function Home() {
+  const [news, setNews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:5001/api/news/');
+        if (!response.ok) {
+          throw new Error('Failed to fetch news');
+        }
+        const data = await response.json();
+        // Transform the data to match the frontend structure
+        const transformedData = data.map(item => ({
+          id: item._id,
+          title: item.title || 'Untitled',
+          excerpt: item.excerpt || '',
+          content: item.content || '',
+          image: item.image || '/default-news-image.jpg',
+          category: item.category || 'uncategorized',
+          date: new Date(item.createdAt).toLocaleDateString('vi-VN'),
+          author: item.author?.username || 'Anonymous',
+          views: item.views || 0,
+          tags: item.tags || []
+        }));
+        setNews(transformedData);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
   return (
     <div>
       <Helmet>
@@ -68,42 +106,59 @@ export default function Home() {
               <h2 className="text-2xl font-bold text-primary-800 mb-6">
                 Tin tức mới nhất
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {news.slice(0, 6).map((item) => (
-                  <motion.article
-                    key={item.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-white rounded-lg overflow-hidden shadow-lg"
+              {loading ? (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+                  <p className="mt-4 text-primary-600">Đang tải tin tức...</p>
+                </div>
+              ) : error ? (
+                <div className="text-center py-8">
+                  <p className="text-red-600">Có lỗi xảy ra: {error}</p>
+                  <button 
+                    onClick={() => window.location.reload()} 
+                    className="mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
                   >
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="p-4">
-                      <div className="flex items-center text-primary-600 mb-2">
-                        <span className="mr-4 text-sm">{item.date}</span>
-                        <span className="bg-primary-100 text-primary-700 px-2 py-1 rounded-full text-xs">
-                          {item.category}
-                        </span>
+                    Thử lại
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {news.slice(0, 6).map((item) => (
+                    <motion.article
+                      key={item.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-white rounded-lg overflow-hidden shadow-lg"
+                    >
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-48 object-cover"
+                      />
+                      <div className="p-4">
+                        <div className="flex items-center text-primary-600 mb-2">
+                          <span className="mr-4 text-sm">{item.date}</span>
+                          <span className="bg-primary-100 text-primary-700 px-2 py-1 rounded-full text-xs">
+                            {item.category}
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-semibold mb-2 text-primary-800 line-clamp-2">
+                          {item.title}
+                        </h3>
+                        <p className="text-primary-600 mb-4 text-sm line-clamp-3">
+                          {item.excerpt}
+                        </p>
+                        <Link
+                          to={`/news/${item.id}`}
+                          className="text-primary-600 hover:text-primary-700 font-medium text-sm"
+                        >
+                          Đọc thêm →
+                        </Link>
                       </div>
-                      <h3 className="text-lg font-semibold mb-2 text-primary-800 line-clamp-2">
-                        {item.title}
-                      </h3>
-                      <p className="text-primary-600 mb-4 text-sm line-clamp-3">
-                        {item.excerpt}
-                      </p>
-                      <Link
-                        to={`/news/${item.id}`}
-                        className="text-primary-600 hover:text-primary-700 font-medium text-sm"
-                      >
-                        Đọc thêm →
-                      </Link>
-                    </div>
-                  </motion.article>
-                ))}
-              </div>
+                    </motion.article>
+                  ))}
+                </div>
+              )}
               <div className="text-center mt-8">
                 <Link
                   to="/news"
