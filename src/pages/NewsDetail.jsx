@@ -181,11 +181,7 @@ export default function NewsDetail() {
 
           <div className="p-8">
             <div className="prose prose-lg max-w-none">
-              {article.content.split("\n\n").map((paragraph, index) => (
-                <p key={index} className="mb-4 text-primary-700">
-                  {paragraph}
-                </p>
-              ))}
+              <p>{article.content}</p>
             </div>
 
             <div className="mt-8 pt-8 border-t border-primary-200">

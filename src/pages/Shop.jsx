@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -6,49 +6,50 @@ import { useCart } from "../contexts/CartContext";
 
 const categories = ["Tất cả", "Sách", "Tài liệu", "Khóa học"];
 
-// Mock data - replace with actual API call
-const products = [
-  {
-    id: 1,
-    name: "Sách Luật Doanh Nghiệp 2024",
-    price: 250000,
-    description:
-      "Cập nhật đầy đủ các quy định mới nhất về luật doanh nghiệp, bao gồm các thay đổi quan trọng và hướng dẫn chi tiết.",
-    image:
-      "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    category: "Sách",
-    stock: 50,
-  },
-  {
-    id: 2,
-    name: "Tài liệu Hướng dẫn Thủ tục Hành chính",
-    price: 180000,
-    description:
-      "Tài liệu hướng dẫn chi tiết về các thủ tục hành chính thường gặp, giúp người dân dễ dàng thực hiện các thủ tục.",
-    image:
-      "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    category: "Tài liệu",
-    stock: 30,
-  },
-  {
-    id: 3,
-    name: "Khóa học Luật Dân sự Cơ bản",
-    price: 1200000,
-    description:
-      "Khóa học trực tuyến về luật dân sự, phù hợp cho người mới bắt đầu tìm hiểu về pháp luật.",
-    image:
-      "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    category: "Khóa học",
-    stock: 100,
-  },
-];
-
 export default function Shop() {
   const { id } = useParams();
   const [selectedCategory, setSelectedCategory] = useState("Tất cả");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("newest");
   const { addToCart } = useCart();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/products/');
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
+        const data = await response.json();
+        setProducts(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-600">Error: {error}</p>
+      </div>
+    );
+  }
 
   const filteredProducts = products
     .filter((product) => {
@@ -64,11 +65,11 @@ export default function Shop() {
       if (sortBy === "price-desc") return b.price - a.price;
       if (sortBy === "name-asc") return a.name.localeCompare(b.name);
       if (sortBy === "name-desc") return b.name.localeCompare(a.name);
-      return 0;
+      return new Date(b.createdAt) - new Date(a.createdAt); // newest first
     });
 
   const selectedProduct = id
-    ? products.find((item) => item.id === parseInt(id))
+    ? products.find((item) => item._id === id)
     : null;
 
   if (selectedProduct) {
@@ -184,7 +185,7 @@ export default function Shop() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProducts.map((product) => (
             <motion.div
-              key={product.id}
+              key={product._id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="bg-white rounded-lg overflow-hidden shadow-lg"
@@ -207,7 +208,7 @@ export default function Shop() {
                     {product.price.toLocaleString("vi-VN")}đ
                   </span>
                   <Link
-                    to={`/shop/${product.id}`}
+                    to={`/shop/${product._id}`}
                     className="text-primary-600 hover:text-primary-700 font-medium"
                   >
                     Chi tiết →
