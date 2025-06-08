@@ -62,7 +62,12 @@ export const consultationAPI = {
   getMyConsultations: async () => {
     const response = await axiosInstance.get("/consultations/my");
     return response.data;
-  }
+  },
+
+  getAllConsultations: async () => {
+    const response = await axiosInstance.get("/consultations");
+    return response.data;
+  },
 };
 
 // News APIs
