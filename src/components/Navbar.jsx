@@ -65,7 +65,7 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <FaBalanceScale className="h-8 w-8 text-primary-600" />
+            <img src="/logo.svg" alt="SushiLaw Logo" className="h-10 w-10" />
               <span className="ml-2 text-xl font-bold text-primary-900">
                 SushiLaw
               </span>

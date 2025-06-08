@@ -5,21 +5,21 @@ const slides = [
   {
     id: 1,
     image:
-      "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80",
+      "https://cdn.thuvienphapluat.vn/uploads/tintuc/2022/09/17/phap-luat-la-gi.jpg",
     title: "Tư vấn pháp luật chuyên nghiệp",
     description: "Đội ngũ luật sư giàu kinh nghiệm, tận tâm với khách hàng",
   },
   {
     id: 2,
     image:
-      "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80",
+      "https://nplaw.vn/upload/images/tu-van-luat-..-min.png",
     title: "Giải pháp pháp lý toàn diện",
     description: "Hỗ trợ khách hàng trong mọi vấn đề pháp lý",
   },
   {
     id: 3,
     image:
-      "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80",
+      "https://img.lsvn.vn/resize/th/upload/2024/11/24/tessstresult-22100909.jpg",
     title: "Dịch vụ pháp lý uy tín",
     description: "Cam kết bảo vệ quyền lợi khách hàng tốt nhất",
   },

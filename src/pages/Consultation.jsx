@@ -79,15 +79,15 @@ export default function Consultation() {
             <div className="bg-white rounded-xl shadow-lg p-6">
               <div className="flex flex-col items-center mb-6">
                 <img
-                  src=""
+                  src="https://phuoc-associates.com/wp-content/uploads/2019/10/Nh%C6%B0-th%E1%BA%BF-n%C3%A0o-l%C3%A0-m%E1%BB%99t-lu%E1%BA%ADt-s%C6%B0-tranh-t%E1%BB%A5ng-gi%E1%BB%8Fi.jpg"
                   alt=" Lê Thị Thủy Ngân"
                   className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-primary-100"
                 />
                 <h2 className="text-xl font-semibold text-primary-900">
-                  Luật sư Lê Thị Thủy Ngân
+                  Luật sư AA
                 </h2>
                 <p className="text-primary-600">
-                  Sinh viên Đại học Luật Hà Nội
+                Luật sư chuyên về pháp luật dân sự
                 </p>
               </div>
 
@@ -98,9 +98,9 @@ export default function Consultation() {
                     <h3 className="font-medium text-primary-900">
                       Thông tin cá nhân
                     </h3>
-                    <p className="text-primary-600">Sinh ngày: 13/01/2005</p>
+                    <p className="text-primary-600">Sinh ngày: 13/09/2005</p>
                     <p className="text-primary-600">
-                      Quê quán: Hà Trung, Thanh Hóa
+                      Quê quán: Hà Nội, Việt Nam
                     </p>
                   </div>
                 </div>
@@ -110,7 +110,7 @@ export default function Consultation() {
                   <div>
                     <h3 className="font-medium text-primary-900">Học vấn</h3>
                     <p className="text-primary-600">
-                      Sinh viên Đại học Luật Hà Nội
+                      Công ty luật sushilaw
                     </p>
                     <p className="text-primary-600">
                       Chuyên ngành: Luật Dân sự

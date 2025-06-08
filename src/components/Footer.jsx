@@ -57,25 +57,8 @@ export default function Footer() {
                 <SiZalo className="w-5 h-5" />
               </a>
             </div>
-            <div className="flex flex-col space-y-2">
-              <a
-                href="#"
-                className="flex items-center space-x-2 text-white hover:text-accent-500 transition-colors"
-              >
-                <FaGooglePlay className="w-5 h-5" />
-                <span className="text-sm">Tải ứng dụng trên Google Play</span>
-              </a>
-              <a
-                href="#"
-                className="flex items-center space-x-2 text-white hover:text-accent-500 transition-colors"
-              >
-                <FaAppStore className="w-5 h-5" />
-                <span className="text-sm">Tải ứng dụng trên App Store</span>
-              </a>
-            </div>
           </div>
 
-          {/* Quick Links - Hidden on mobile */}
           <div className="hidden lg:block">
             <h3 className="text-lg font-semibold mb-4 text-text-red">
               Liên kết nhanh
@@ -116,7 +99,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Services - Hidden on mobile */}
           <div className="hidden lg:block">
             <h3 className="text-lg font-semibold mb-4 text-text-red">
               Dịch vụ
@@ -164,13 +146,13 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2">
               <li className="text-white">
-                <strong>Địa chỉ:</strong> 123 Đường ABC, Quận XYZ, TP. HCM
+                <strong>Địa chỉ:</strong> Cầu Giấy - Hà Nội 
               </li>
               <li className="text-white">
-                <strong>Điện thoại:</strong> (028) 1234 5678
+                <strong>Điện thoại:</strong> 08682986620868298662
               </li>
               <li className="text-white">
-                <strong>Email:</strong> info@sushilaw.vn
+                <strong>Email:</strong> cv.minhdung09@gmail.com
               </li>
             </ul>
           </div>

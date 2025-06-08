@@ -131,12 +131,12 @@ const Orders = () => {
                         <div>
                           <p className="text-sm text-gray-500">Mã đơn hàng: {order._id}</p>
                           <p className="mt-1 text-lg font-medium text-gray-900">
-                            {order.customerInfo.fullName}
+                            {order.fullName}
                           </p>
                         </div>
                         <div className="flex items-center space-x-4">
                           <span className="text-lg font-medium text-primary-600">
-                            {order.totalAmount.toLocaleString("vi-VN")}đ
+                            {order.total.toLocaleString("vi-VN")}đ
                           </span>
                           <button
                             onClick={() => setSelectedOrder(order)}
@@ -155,7 +155,7 @@ const Orders = () => {
                             })}
                           </p>
                           <p className="text-sm text-gray-500 mt-1">
-                            Địa chỉ: {order.customerInfo.address}, {order.customerInfo.city}
+                            Địa chỉ: {order.address}, {order.city}
                           </p>
                         </div>
                         <div className="flex justify-end">
@@ -199,7 +199,7 @@ const Orders = () => {
                     <div>
                       <p className="text-sm font-medium text-gray-500">Tổng tiền</p>
                       <p className="mt-1 text-gray-900">
-                        {selectedOrder.totalAmount.toLocaleString("vi-VN")}đ
+                        {selectedOrder.total.toLocaleString("vi-VN")}đ
                       </p>
                     </div>
                     <div>
@@ -216,6 +216,12 @@ const Orders = () => {
                         })}
                       </p>
                     </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Phương thức thanh toán</p>
+                      <p className="mt-1 text-gray-900">
+                        {selectedOrder.paymentMethod}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -224,13 +230,8 @@ const Orders = () => {
                   <div className="space-y-4">
                     {selectedOrder.items.map((item, index) => (
                       <div key={index} className="flex items-center">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-16 h-16 object-cover rounded"
-                        />
                         <div className="ml-4 flex-grow">
-                          <p className="font-medium">{item.name}</p>
+                          <p className="font-medium">{item.productName}</p>
                           <p className="text-sm text-gray-500">
                             Số lượng: {item.quantity} x {item.price.toLocaleString("vi-VN")}đ
                           </p>
@@ -250,20 +251,20 @@ const Orders = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm font-medium text-gray-500">Người nhận</p>
-                      <p className="mt-1">{selectedOrder.customerInfo.fullName}</p>
+                      <p className="mt-1">{selectedOrder.fullName}</p>
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-500">Số điện thoại</p>
-                      <p className="mt-1">{selectedOrder.customerInfo.phone}</p>
+                      <p className="mt-1">{selectedOrder.phone}</p>
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-500">Email</p>
-                      <p className="mt-1">{selectedOrder.customerInfo.email}</p>
+                      <p className="mt-1">{selectedOrder.email}</p>
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-500">Địa chỉ</p>
                       <p className="mt-1">
-                        {selectedOrder.customerInfo.address}, {selectedOrder.customerInfo.city}
+                        {selectedOrder.address}, {selectedOrder.city}
                       </p>
                     </div>
                   </div>
