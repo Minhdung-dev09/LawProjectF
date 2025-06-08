@@ -22,7 +22,7 @@ export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch cart data when component mounts
+  // Fetch cart data khikhi component mounts
   useEffect(() => {
     fetchCart();
   }, []);
@@ -41,8 +41,7 @@ export function CartProvider({ children }) {
         },
       };
       const response = await axios.get(API_URL, config);
-      
-      // Transform the API response to match frontend format
+
       const transformedItems = transformCartItems(response.data);
       setCartItems(transformedItems);
       setLoading(false);
@@ -68,10 +67,7 @@ export function CartProvider({ children }) {
         },
       };
       
-      // Log the product object to see what we're getting
-      console.log("Adding product to cart:", product);
 
-      // Make sure we're sending the correct product ID
       const productId = product._id || product.id;
       
       if (!productId) {

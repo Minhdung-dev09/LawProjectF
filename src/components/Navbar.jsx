@@ -47,7 +47,6 @@ export default function Navbar() {
     } else {
       dispatch(logout());
     }
-    // eslint-disable-next-line
   }, []);
 
   const handleLogout = () => {
