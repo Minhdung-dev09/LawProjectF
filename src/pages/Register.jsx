@@ -50,7 +50,7 @@ export default function Register() {
 
     try {
       // Gửi dữ liệu lên backend API
-      const response = await fetch("http://localhost:5001/api/users/", {
+      const response = await fetch("http://localhost:5000/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

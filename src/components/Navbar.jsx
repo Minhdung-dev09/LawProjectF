@@ -105,51 +105,61 @@ export default function Navbar() {
 
                 <AnimatePresence>
                   {isUserMenuOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
-                    >
-                      <div className="py-1">
-                        <Link
-                          to="/profile"
-                          className="flex items-center px-4 py-2 text-sm text-primary-700 hover:bg-primary-50"
-                        >
-                          <FaUser className="mr-2 h-4 w-4" />
-                          Tài khoản của tôi
-                        </Link>
-                        <Link
-                          to="/cart"
-                          className="flex items-center px-4 py-2 text-sm text-primary-700 hover:bg-primary-50"
-                        >
-                          <FaShoppingCart className="mr-2 h-4 w-4" />
-                          Giỏ hàng
-                        </Link>
-                        <Link
-                          to="/orders"
-                          className="flex items-center px-4 py-2 text-sm text-primary-700 hover:bg-primary-50"
-                        >
-                          <FaClipboardList className="mr-2 h-4 w-4" />
-                          Đơn hàng của tôi
-                        </Link>
-                        <Link
-                          to="/my-consultations"
-                          className="flex items-center px-4 py-2 text-sm text-primary-700 hover:bg-primary-50"
-                        >
-                          <FaBalanceScale className="mr-2 h-4 w-4" />
-                          Lịch sử tư vấn
-                        </Link>
-                        <div className="border-t border-gray-100 my-1"></div>
-                        <button
-                          onClick={handleLogout}
-                          className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-primary-50"
-                        >
-                          <FaSignOutAlt className="mr-2 h-4 w-4" />
-                          Đăng xuất
-                        </button>
-                      </div>
-                    </motion.div>
+                    <>
+                      <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      ></div>
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                      >
+                        <div className="py-1">
+                          <Link
+                            to="/profile"
+                            className="flex items-center px-4 py-2 text-sm text-primary-700 hover:bg-primary-50"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <FaUser className="mr-2 h-4 w-4" />
+                            Tài khoản của tôi
+                          </Link>
+                          <Link
+                            to="/cart"
+                            className="flex items-center px-4 py-2 text-sm text-primary-700 hover:bg-primary-50"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <FaShoppingCart className="mr-2 h-4 w-4" />
+                            Giỏ hàng
+                          </Link>
+                          <Link
+                            to="/orders"
+                            className="flex items-center px-4 py-2 text-sm text-primary-700 hover:bg-primary-50"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <FaClipboardList className="mr-2 h-4 w-4" />
+                            Đơn hàng của tôi
+                          </Link>
+                          <Link
+                            to="/my-consultations"
+                            className="flex items-center px-4 py-2 text-sm text-primary-700 hover:bg-primary-50"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <FaBalanceScale className="mr-2 h-4 w-4" />
+                            Lịch sử tư vấn
+                          </Link>
+                          <div className="border-t border-gray-100 my-1"></div>
+                          <button
+                            onClick={handleLogout}
+                            className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-primary-50"
+                          >
+                            <FaSignOutAlt className="mr-2 h-4 w-4" />
+                            Đăng xuất
+                          </button>
+                        </div>
+                      </motion.div>
+                    </>
                   )}
                 </AnimatePresence>
               </div>

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import { Helmet } from "react-helmet-async";
+import { toast } from "react-toastify";
+import { consultationAPI } from "../services/apisAll";
 
 const statusColors = {
   pending: "bg-yellow-100 text-yellow-800",
@@ -22,38 +24,21 @@ const MyConsultations = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // TODO: Replace with actual API call
     const fetchConsultations = async () => {
       try {
-        // Simulated API response
-        const response = [
-          {
-            id: 1,
-            fullName: "Nguyễn Văn A",
-            email: "nguyenvana@email.com",
-            phone: "0123456789",
-            topic: "Tư vấn luật doanh nghiệp",
-            content: "Tôi cần tư vấn về thủ tục thành lập công ty TNHH",
-            status: "pending",
-            createdAt: "2024-03-20T10:00:00",
-            updatedAt: "2024-03-20T10:00:00",
-          },
-          {
-            id: 2,
-            fullName: "Trần Thị B",
-            email: "tranthib@email.com",
-            phone: "0987654321",
-            topic: "Tư vấn luật dân sự",
-            content: "Tôi cần tư vấn về tranh chấp hợp đồng thuê nhà",
-            status: "approved",
-            createdAt: "2024-03-19T15:30:00",
-            updatedAt: "2024-03-20T09:15:00",
-          },
-        ];
-        setConsultations(response);
-        setLoading(false);
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+          throw new Error("Vui lòng đăng nhập để xem danh sách tư vấn.");
+        }
+
+        const data = await consultationAPI.getMyConsultations();
+        setConsultations(data);
       } catch (error) {
         console.error("Error fetching consultations:", error);
+        toast.error(
+          error.response?.data?.message || "Có lỗi xảy ra khi tải dữ liệu"
+        );
+      } finally {
         setLoading(false);
       }
     };
@@ -87,7 +72,7 @@ const MyConsultations = () => {
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <ul className="divide-y divide-gray-200">
             {consultations.map((consultation) => (
-              <li key={consultation.id} className="p-6">
+              <li key={consultation._id} className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <div>
@@ -106,7 +91,7 @@ const MyConsultations = () => {
                         Chủ đề tư vấn
                       </h4>
                       <p className="mt-1 text-sm text-gray-500">
-                        {consultation.topic}
+                        {consultation.subject}
                       </p>
                     </div>
                     <div>
@@ -114,7 +99,7 @@ const MyConsultations = () => {
                         Nội dung cần tư vấn
                       </h4>
                       <p className="mt-1 text-sm text-gray-500">
-                        {consultation.content}
+                        {consultation.message}
                       </p>
                     </div>
                   </div>

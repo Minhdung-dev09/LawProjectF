@@ -1,56 +1,51 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useCart } from "../contexts/CartContext";
 
-const categories = ["Tất cả", "Sách", "Tài liệu", "Khóa học"];
-
-// Mock data - replace with actual API call
-const products = [
-  {
-    id: 1,
-    name: "Sách Luật Doanh Nghiệp 2024",
-    price: 250000,
-    description:
-      "Cập nhật đầy đủ các quy định mới nhất về luật doanh nghiệp, bao gồm các thay đổi quan trọng và hướng dẫn chi tiết.",
-    image:
-      "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    category: "Sách",
-    stock: 50,
-  },
-  {
-    id: 2,
-    name: "Tài liệu Hướng dẫn Thủ tục Hành chính",
-    price: 180000,
-    description:
-      "Tài liệu hướng dẫn chi tiết về các thủ tục hành chính thường gặp, giúp người dân dễ dàng thực hiện các thủ tục.",
-    image:
-      "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    category: "Tài liệu",
-    stock: 30,
-  },
-  {
-    id: 3,
-    name: "Khóa học Luật Dân sự Cơ bản",
-    price: 1200000,
-    description:
-      "Khóa học trực tuyến về luật dân sự, phù hợp cho người mới bắt đầu tìm hiểu về pháp luật.",
-    image:
-      "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    category: "Khóa học",
-    stock: 100,
-  },
-];
 
 export default function Shop() {
   const { id } = useParams();
+  const { addToCart } = useCart();
+
+  const categories = ["Tất cả", "Sách", "Tài liệu", "Khóa học"];
+  const [product, setProduct] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("Tất cả");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("newest");
-  const { addToCart } = useCart();
+  const itemsPerPage = 8;
 
-  const filteredProducts = products
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:5000/api/products');
+        if (!response.ok) throw new Error('Failed to fetch products');
+        const data = await response.json();
+        const transformedData = data.map(item => ({
+          id: item._id,
+          name: item.name || 'Untitled',
+          price: item.price || 0,
+          description: item.description || '',
+          image: item.image || '/default-news-image.jpg',
+          category: item.category || 'uncategorized',
+          stock: item.stock || 0,
+        }));
+        setProduct(transformedData);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchNews();
+  }, []);
+
+  const filteredProducts = product
     .filter((product) => {
       const matchesCategory =
         selectedCategory === "Tất cả" || product.category === selectedCategory;
@@ -68,7 +63,7 @@ export default function Shop() {
     });
 
   const selectedProduct = id
-    ? products.find((item) => item.id === parseInt(id))
+    ? product.find((item) => item.id === id)
     : null;
 
   if (selectedProduct) {
@@ -111,10 +106,17 @@ export default function Shop() {
                 </span>
               </div>
               <button
-                onClick={() => {
-                  addToCart(selectedProduct);
-                  alert("Đã thêm vào giỏ hàng!");
+                onClick={async () => {
+                  try {
+                    console.log('Product being added from Shop:', selectedProduct);
+                    await addToCart(selectedProduct);
+                    alert("Đã thêm vào giỏ hàng thành công!");
+                  } catch (error) {
+                    console.error("Error adding to cart:", error);
+                    alert("Không thể thêm vào giỏ hàng. Vui lòng thử lại sau.");
+                  }
                 }}
+                disabled={loading}
                 className="w-full bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors"
               >
                 Thêm vào giỏ hàng
@@ -180,6 +182,9 @@ export default function Shop() {
             <option value="name-desc">Tên Z-A</option>
           </select>
         </div>
+
+        {loading && <p>Đang tải sản phẩm...</p>}
+        {error && <p className="text-red-500">Lỗi: {error}</p>}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProducts.map((product) => (

@@ -24,34 +24,35 @@ import MessengerChat from './components/MessengerChat';
 function App() {
   return (
     <HelmetProvider>
-      <CartProvider>
-        <Router>
-          <div className="min-h-screen bg-gray-50">
-            <Navbar />
-            <WelcomePopup />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/consultation" element={<Consultation />} />
-              <Route path="/news" element={<News />} />
-              <Route path="/news/:id" element={<NewsDetail />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/shop/:id" element={<Shop />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/my-consultations" element={<MyConsultations />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/checkout/success" element={<CheckoutSuccess />} />
-            </Routes>
-            <Footer />
-            <MessengerChat pageId="100083272317932" />
-          </div>
-        </Router>
-      </CartProvider>
+      <Router>
+        <CartProvider>
+            <div className="min-h-screen bg-gray-50">
+              <Navbar />
+              <WelcomePopup />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/consultation" element={<Consultation />} />
+                <Route path="/news" element={<News />} />
+                <Route path="/news/:id" element={<NewsDetail />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/shop/:id" element={<Shop />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/my-consultations" element={<MyConsultations />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/checkout/success" element={<CheckoutSuccess />} />
+              </Routes>
+              <Footer />
+              <MessengerChat pageId="100083272317932" />
+            </div>
+
+        </CartProvider>
+      </Router>
     </HelmetProvider>
   );
 }

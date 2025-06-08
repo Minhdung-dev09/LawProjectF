@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import { FaLock, FaEnvelope, FaBalanceScale } from "react-icons/fa";
-import axios from "axios";
+import { authAPI } from "../services/apisAll";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -18,13 +18,13 @@ export default function Login() {
     e.preventDefault();
     setError(""); 
     try {
-      const response = await axios.post("http://localhost:5001/api/users/auth", formData);
-      const { token, user } = response.data;
+      const { token, user } = await authAPI.login(formData);
 
       localStorage.setItem("authToken", token);
       localStorage.setItem("user", JSON.stringify(user));
 
       navigate("/");
+      window.location.reload();
     } catch (err) {
       setError(err.response?.data?.message || "Đăng nhập thất bại");
     }

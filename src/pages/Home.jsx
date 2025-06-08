@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Banner from "../components/Banner";
 import AdSidebar from "../components/AdSidebar";
 import WelcomePopup from "../components/WelcomePopup";
+import { newsAPI } from "../services/apisAll";
 
 const features = [
   {
@@ -33,11 +34,7 @@ export default function Home() {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:5001/api/news/');
-        if (!response.ok) {
-          throw new Error('Failed to fetch news');
-        }
-        const data = await response.json();
+        const data = await newsAPI.getAllNews();
         // Transform the data to match the frontend structure
         const transformedData = data.map(item => ({
           id: item._id,
@@ -54,7 +51,7 @@ export default function Home() {
         setNews(transformedData);
         setError(null);
       } catch (err) {
-        setError(err.message);
+        setError(err.response?.data?.message || "Có lỗi xảy ra khi tải tin tức");
       } finally {
         setLoading(false);
       }

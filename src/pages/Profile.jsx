@@ -9,6 +9,7 @@ import {
   FaEdit,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { authAPI } from "../services/apisAll";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const Profile = () => {
           return;
         }
 
-        const response = await fetch("http://localhost:5001/api/users/profile", {
+        const response = await fetch("http://localhost:5000/api/users/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -64,25 +65,11 @@ const Profile = () => {
 
   const handleSave = async () => {
     try {
-      const token = localStorage.getItem("authToken");
-      const response = await fetch("http://localhost:5001/api/users/profile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(editedUser),
-      });
-
-      if (!response.ok) {
-        throw new Error("Cập nhật hồ sơ thất bại");
-      }
-
-      const updatedUser = await response.json();
+      const updatedUser = await authAPI.updateProfile(editedUser);
       setUser(updatedUser);
       setIsEditing(false);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || "Cập nhật hồ sơ thất bại");
     }
   };
 
@@ -110,20 +97,7 @@ const Profile = () => {
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("authToken");
-      const response = await fetch("http://localhost:5001/api/users/profile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(passwordData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Đổi mật khẩu thất bại");
-      }
-
+      await authAPI.changePassword(passwordData);
       setShowPasswordForm(false);
       setPasswordData({
         currentPassword: "",
@@ -131,7 +105,7 @@ const Profile = () => {
         confirmPassword: "",
       });
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || "Đổi mật khẩu thất bại");
     }
   };
 
@@ -247,11 +221,6 @@ const Profile = () => {
                       <div>
                         <h3 className="text-sm font-medium text-gray-500">Số điện thoại</h3>
                         <p className="text-gray-900">{user.phone}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
-                        <FaMapMarkerAlt className="text-white" />
                       </div>
                     </div>
                   </div>

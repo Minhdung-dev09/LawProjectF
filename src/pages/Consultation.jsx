@@ -9,44 +9,46 @@ import {
   FaBriefcase,
   FaUser,
 } from "react-icons/fa";
-
-// Mock data - replace with actual API call
-const lawyers = [
-  {
-    id: 1,
-    name: "Nguyễn Văn A",
-    specialization: "Luật Dân sự",
-    experience: "15 năm",
-    image: "https://via.placeholder.com/200x200",
-    description:
-      "Chuyên gia tư vấn về các vấn đề dân sự, hôn nhân gia đình, thừa kế.",
-  },
-  {
-    id: 2,
-    name: "Trần Thị B",
-    specialization: "Luật Hình sự",
-    experience: "12 năm",
-    image: "https://via.placeholder.com/200x200",
-    description:
-      "Chuyên gia tư vấn về các vấn đề hình sự, bảo vệ quyền lợi người bị hại.",
-  },
-  // Add more mock data as needed
-];
+import { toast } from "react-toastify";
+import { consultationAPI } from "../services/apisAll";
 
 export default function Consultation() {
   const [selectedLawyer, setSelectedLawyer] = useState(null);
   const [formData, setFormData] = useState({
-    name: "",
+    fullName: "",
     email: "",
     phone: "",
     subject: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Xử lý gửi form
-    console.log(formData);
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        throw new Error("Vui lòng đăng nhập để gửi yêu cầu tư vấn.");
+      }
+
+      await consultationAPI.createConsultation(formData);
+      toast.success("Gửi yêu cầu tư vấn thành công!");
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Error submitting consultation:", error);
+      toast.error(
+        error.response?.data?.message || "Có lỗi xảy ra khi gửi yêu cầu tư vấn"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -152,16 +154,16 @@ export default function Consultation() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label
-                    htmlFor="name"
+                    htmlFor="fullName"
                     className="block text-sm font-medium text-primary-700 mb-1"
                   >
                     Họ và tên
                   </label>
                   <input
                     type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
+                    id="fullName"
+                    name="fullName"
+                    value={formData.fullName}
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-2 border border-primary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
@@ -244,9 +246,10 @@ export default function Consultation() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 transition-colors"
+                  disabled={loading}
+                  className="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 transition-colors disabled:bg-gray-400"
                 >
-                  Gửi yêu cầu tư vấn
+                  {loading ? "Đang gửi..." : "Gửi yêu cầu tư vấn"}
                 </motion.button>
               </form>
             </div>

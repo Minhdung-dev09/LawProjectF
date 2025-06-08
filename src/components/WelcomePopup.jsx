@@ -17,7 +17,7 @@ export default function WelcomePopup() {
         <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-400 opacity-10" />
         <div className="p-8 relative z-10">
           <h2 className="text-3xl font-bold text-primary-800 mb-4">
-            Chào mừng đến với Công ty Luật ABC
+            Chào mừng đến với Công ty Luật Sushilaw
           </h2>
           <div className="space-y-4 text-primary-600">
             <p>
@@ -25,10 +25,10 @@ export default function WelcomePopup() {
               dịch vụ:
             </p>
             <ul className="list-disc list-inside space-y-2">
-              <li>Tư vấn pháp luật chuyên sâu</li>
-              <li>Đại diện pháp lý</li>
-              <li>Soạn thảo hợp đồng</li>
-              <li>Giải quyết tranh chấp</li>
+              <li> 🫡 Tư vấn pháp luật chuyên sâu</li>
+              <li> 🫡 Đại diện pháp lý</li>
+              <li> 🫡 Soạn thảo hợp đồng</li>
+              <li> 🫡 Giải quyết tranh chấp</li>
             </ul>
             <p>
               Với đội ngũ luật sư giàu kinh nghiệm, chúng tôi cam kết mang đến

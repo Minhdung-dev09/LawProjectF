@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { newsCategories } from "../data";
+import Comment from "../components/Comment";
 
 export default function NewsDetail() {
   const { id } = useParams();
@@ -14,7 +15,7 @@ export default function NewsDetail() {
     const fetchArticle = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:5001/api/news/${id}`);
+        const response = await fetch(`http://localhost:5000/api/news/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch article');
         }
@@ -200,6 +201,10 @@ export default function NewsDetail() {
                   </span>
                 ))}
               </div>
+            </div>
+
+            <div className="mt-8 pt-8 border-t border-primary-200">
+              <Comment articleId={article.id} />
             </div>
           </div>
         </article>
