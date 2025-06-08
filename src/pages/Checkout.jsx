@@ -4,6 +4,9 @@ import { Helmet } from "react-helmet-async";
 import { useCart } from "../contexts/CartContext";
 import { motion } from "framer-motion";
 import { FaLock, FaCreditCard, FaUser, FaMapMarkerAlt } from "react-icons/fa";
+import axios from "axios";
+
+const API_URL = "http://localhost:5000/api/orders";
 
 const paymentMethods = [
   {
@@ -40,28 +43,38 @@ export default function Checkout() {
     setIsProcessing(true);
 
     try {
-      // Simulate payment processing
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        throw new Error("Vui lòng đăng nhập để tiếp tục");
+      }
 
-      // Create order object
-      const order = {
-        id: `ORD-${Date.now()}`,
-        items: cartItems,
-        total: getTotal(),
-        customerInfo: formData,
-        status: "completed",
-        date: new Date().toISOString(),
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       };
 
-      // Here you would typically save the order to your backend
-      console.log("Order created:", order);
+      // Create order through API
+      const response = await axios.post(
+        API_URL,
+        {
+          customerInfo: formData,
+          paymentMethod: formData.paymentMethod,
+        },
+        config
+      );
 
       // Clear cart and redirect to success page
       clearCart();
-      navigate("/checkout/success", { state: { order } });
+      navigate("/checkout/success", { state: { order: response.data.order } });
     } catch (error) {
       console.error("Payment failed:", error);
-      alert("Thanh toán thất bại. Vui lòng thử lại.");
+      alert(
+        error.response?.data?.message ||
+          error.message ||
+          "Thanh toán thất bại. Vui lòng thử lại."
+      );
     } finally {
       setIsProcessing(false);
     }

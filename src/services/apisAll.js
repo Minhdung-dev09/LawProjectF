@@ -30,27 +30,6 @@ export const authAPI = {
 
 
 // Order APIs
-export const orderAPI = {
-  createOrder: async (orderData) => {
-    const response = await axiosInstance.post("/orders", orderData);
-    return response.data;
-  },
-
-  getMyOrders: async (page = 1, status = "") => {
-    const response = await axiosInstance.get(`/orders/my?page=${page}&status=${status}`);
-    return response.data;
-  },
-
-  getOrderById: async (orderId) => {
-    const response = await axiosInstance.get(`/orders/${orderId}`);
-    return response.data;
-  },
-
-  cancelOrder: async (orderId) => {
-    const response = await axiosInstance.post(`/orders/${orderId}/cancel`);
-    return response.data;
-  }
-};
 
 // Consultation APIs
 export const consultationAPI = {
