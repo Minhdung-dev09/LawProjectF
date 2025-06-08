@@ -63,7 +63,62 @@ export default function CheckoutSuccess() {
               </div>
               <div>
                 <p className="text-sm text-gray-500">Trạng thái</p>
-                <p className="font-medium text-green-600">Đã thanh toán</p>
+                <p className="font-medium text-green-600">
+                  {order.status === 'pending' ? 'Chờ xử lý' :
+                   order.status === 'processing' ? 'Đang xử lý' :
+                   order.status === 'completed' ? 'Hoàn thành' :
+                   order.status === 'cancelled' ? 'Đã hủy' : 'Đang xử lý'}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 border-t pt-6">
+              <h3 className="text-lg font-semibold mb-4">Chi tiết đơn hàng</h3>
+              <div className="space-y-4">
+                {order.items.map((item, index) => (
+                  <div key={index} className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-16 h-16 object-cover rounded"
+                      />
+                      <div className="ml-4">
+                        <p className="font-medium">{item.name}</p>
+                        <p className="text-sm text-gray-500">
+                          Số lượng: {item.quantity}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="font-medium">
+                      {(item.price * item.quantity).toLocaleString("vi-VN")}đ
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6 border-t pt-6">
+              <h3 className="text-lg font-semibold mb-4">Thông tin giao hàng</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-gray-500">Họ và tên</p>
+                  <p className="font-medium">{order.customerInfo.fullName}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Email</p>
+                  <p className="font-medium">{order.customerInfo.email}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Số điện thoại</p>
+                  <p className="font-medium">{order.customerInfo.phone}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Địa chỉ</p>
+                  <p className="font-medium">
+                    {order.customerInfo.address}, {order.customerInfo.city}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

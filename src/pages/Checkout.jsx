@@ -48,32 +48,58 @@ export default function Checkout() {
         throw new Error("Vui lòng đăng nhập để tiếp tục");
       }
 
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+      const orderData = {
+        customerInfo: {
+          fullName: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          city: formData.city
         },
+        items: cartItems.map(item => ({
+          product: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          image: item.image
+        })),
+        totalAmount: getTotal(),
+        paymentMethod: formData.paymentMethod
       };
 
-      // Create order through API
       const response = await axios.post(
         API_URL,
+        orderData,
         {
-          customerInfo: formData,
-          paymentMethod: formData.paymentMethod,
-        },
-        config
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
 
-      // Clear cart and redirect to success page
-      clearCart();
-      navigate("/checkout/success", { state: { order: response.data.order } });
+      if (response.data) {
+        // Clear cart and redirect to success page
+        clearCart();
+        navigate("/checkout/success", { 
+          state: { 
+            order: {
+              id: response.data.order._id,
+              date: response.data.order.createdAt,
+              total: response.data.order.totalAmount,
+              customerInfo: response.data.order.customerInfo,
+              items: response.data.order.items,
+              status: response.data.order.status
+            }
+          } 
+        });
+      }
     } catch (error) {
       console.error("Payment failed:", error);
       alert(
         error.response?.data?.message ||
-          error.message ||
-          "Thanh toán thất bại. Vui lòng thử lại."
+        error.message ||
+        "Thanh toán thất bại. Vui lòng thử lại."
       );
     } finally {
       setIsProcessing(false);
