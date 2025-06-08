@@ -3,15 +3,46 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
 import { FaTrash, FaShoppingCart } from "react-icons/fa";
+import { BiLoaderAlt } from "react-icons/bi";
 
 export default function Cart() {
   const navigate = useNavigate();
-  const { cartItems, updateQuantity, removeFromCart, getTotal } = useCart();
+  const { cartItems, updateQuantity, removeFromCart, getTotal, loading } = useCart();
   const [isCheckout, setIsCheckout] = useState(false);
+  const [updatingItemId, setUpdatingItemId] = useState(null);
+  const [removingItemId, setRemovingItemId] = useState(null);
 
   const handleCheckout = () => {
     navigate("/checkout");
   };
+
+  const handleUpdateQuantity = async (itemId, newQuantity) => {
+    if (newQuantity < 1) return;
+    setUpdatingItemId(itemId);
+    try {
+      await updateQuantity(itemId, newQuantity);
+    } finally {
+      setUpdatingItemId(null);
+    }
+  };
+
+  const handleRemoveFromCart = async (itemId) => {
+    setRemovingItemId(itemId);
+    try {
+      await removeFromCart(itemId);
+    } finally {
+      setRemovingItemId(null);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <BiLoaderAlt className="animate-spin text-4xl text-primary-600" />
+        <span className="ml-2 text-lg text-primary-600">Đang tải giỏ hàng...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -40,8 +71,13 @@ export default function Cart() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, x: -100 }}
-                  className="flex items-center bg-white p-4 rounded-lg shadow"
+                  className="flex items-center bg-white p-4 rounded-lg shadow relative"
                 >
+                  {(updatingItemId === item.id || removingItemId === item.id) && (
+                    <div className="absolute inset-0 bg-white/50 flex items-center justify-center rounded-lg">
+                      <BiLoaderAlt className="animate-spin text-2xl text-primary-600" />
+                    </div>
+                  )}
                   <img
                     src={item.image}
                     alt={item.name}
@@ -58,26 +94,25 @@ export default function Cart() {
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center border rounded-lg">
                       <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
-                        }
-                        className="px-3 py-1 text-primary-600 hover:bg-primary-50"
+                        onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
+                        disabled={updatingItemId === item.id}
+                        className="px-3 py-1 text-primary-600 hover:bg-primary-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         -
                       </button>
                       <span className="px-3 py-1">{item.quantity}</span>
                       <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
-                        }
-                        className="px-3 py-1 text-primary-600 hover:bg-primary-50"
+                        onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+                        disabled={updatingItemId === item.id}
+                        className="px-3 py-1 text-primary-600 hover:bg-primary-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         +
                       </button>
                     </div>
                     <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="text-red-500 hover:text-red-700"
+                      onClick={() => handleRemoveFromCart(item.id)}
+                      disabled={removingItemId === item.id}
+                      className="text-red-500 hover:text-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <FaTrash />
                     </button>
