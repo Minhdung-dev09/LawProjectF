@@ -136,7 +136,7 @@ const Orders = () => {
                         </div>
                         <div className="flex items-center space-x-4">
                           <span className="text-lg font-medium text-primary-600">
-                            {order.total.toLocaleString("vi-VN")}đ
+                            {(order.totalAmount || order.total || order.subtotal || 0).toLocaleString("vi-VN")}đ
                           </span>
                           <button
                             onClick={() => setSelectedOrder(order)}
@@ -199,7 +199,7 @@ const Orders = () => {
                     <div>
                       <p className="text-sm font-medium text-gray-500">Tổng tiền</p>
                       <p className="mt-1 text-gray-900">
-                        {selectedOrder.total.toLocaleString("vi-VN")}đ
+                        {(selectedOrder.totalAmount || selectedOrder.total || selectedOrder.subtotal || 0).toLocaleString("vi-VN")}đ
                       </p>
                     </div>
                     <div>

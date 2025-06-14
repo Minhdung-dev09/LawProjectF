@@ -134,7 +134,7 @@ const Profile = () => {
             <div className="h-32 bg-gray-700"></div>
             <div className="absolute -bottom-16 left-8">
               <div className="w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-white shadow-lg">
-                <img src={user.image} alt="Ảnh đại diện" className="w-full h-full object-cover" />
+                <img src={user.image || "https://jbagy.me/wp-content/uploads/2025/03/Hinh-anh-avatar-nam-cute-2.jpg"} alt="Ảnh đại diện" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>

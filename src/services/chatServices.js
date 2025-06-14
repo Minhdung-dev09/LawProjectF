@@ -1,4 +1,4 @@
-const OPENROUTER_API_KEY = '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';
+const OPENROUTER_API_KEY = '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';
 
 export const sendMessage = async (message) => {
   try {
