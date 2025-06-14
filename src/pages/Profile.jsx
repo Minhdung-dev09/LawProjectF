@@ -7,6 +7,7 @@ import {
   FaMapMarkerAlt,
   FaLock,
   FaEdit,
+  FaUpload,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../services/apisAll";
@@ -25,6 +26,9 @@ const Profile = () => {
     newPassword: "",
     confirmPassword: "",
   });
+
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -109,6 +113,44 @@ const Profile = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+    }
+  };
+
+  const handleImageUpload = async () => {
+    if (!selectedImage) return;
+
+    try {
+      setUploading(true);
+      const formData = new FormData();
+      formData.append('image', selectedImage);
+
+      const token = localStorage.getItem("authToken");
+      const response = await fetch("https://backend-law-vxco.onrender.com/api/users/upload-avatar", {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Không thể tải ảnh lên");
+      }
+
+      const data = await response.json();
+      setUser(prev => ({ ...prev, image: data.imageUrl }));
+      setSelectedImage(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Đang tải...</div>;
   }
@@ -134,7 +176,36 @@ const Profile = () => {
             <div className="h-32 bg-gray-700"></div>
             <div className="absolute -bottom-16 left-8">
               <div className="w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-white shadow-lg">
-                <img src={user.image || "https://jbagy.me/wp-content/uploads/2025/03/Hinh-anh-avatar-nam-cute-2.jpg"} alt="Ảnh đại diện" className="w-full h-full object-cover" />
+                <img 
+                  src={user.image || "https://jbagy.me/wp-content/uploads/2025/03/Hinh-anh-avatar-nam-cute-2.jpg"} 
+                  alt="Ảnh đại diện" 
+                  className="w-full h-full object-cover" 
+                />
+              </div>
+              <div className="mt-4 flex flex-col items-center space-y-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                  id="avatar-upload"
+                />
+                <label
+                  htmlFor="avatar-upload"
+                  className="cursor-pointer px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors flex items-center"
+                >
+                  <FaUpload className="mr-2" />
+                  Chọn ảnh
+                </label>
+                {selectedImage && (
+                  <button
+                    onClick={handleImageUpload}
+                    disabled={uploading}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-500 transition-colors disabled:opacity-50"
+                  >
+                    {uploading ? "Đang tải lên..." : "Tải ảnh lên"}
+                  </button>
+                )}
               </div>
             </div>
           </div>
