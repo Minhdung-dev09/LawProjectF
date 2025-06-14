@@ -22,7 +22,7 @@ export default function Shop() {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:5000/api/products');
+        const response = await fetch('https://backend-law-vxco.onrender.com/api/products');
         if (!response.ok) throw new Error('Failed to fetch products');
         const data = await response.json();
         const transformedData = data.map(item => ({

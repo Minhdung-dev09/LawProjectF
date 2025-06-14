@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_BASE_URL = "http://localhost:5000/api";
+export const API_BASE_URL = "https://backend-law-vxco.onrender.com/api";
 
 export const getAuthHeaders = () => {
   const token = localStorage.getItem("authToken");

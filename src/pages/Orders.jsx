@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { FaEye, FaFilter, FaSpinner } from "react-icons/fa";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/orders";
+const API_URL = "https://backend-law-vxco.onrender.com/api/orders";
 
 const statusColors = {
   pending: "bg-yellow-100 text-yellow-800",

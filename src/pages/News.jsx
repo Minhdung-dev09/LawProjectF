@@ -22,7 +22,7 @@ export default function News() {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:5000/api/news/');
+        const response = await fetch('https://backend-law-vxco.onrender.com/api/news/');
         if (!response.ok) {
           throw new Error('Failed to fetch news');
         }

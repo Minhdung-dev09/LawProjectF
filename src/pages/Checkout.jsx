@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { FaLock, FaCreditCard, FaUser, FaMapMarkerAlt } from "react-icons/fa";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/orders";
+const API_URL = "https://backend-law-vxco.onrender.com/api/orders";
 
 const paymentMethods = [
   {
