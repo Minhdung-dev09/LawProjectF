@@ -129,8 +129,8 @@ const Profile = () => {
       formData.append('image', selectedImage);
 
       const token = localStorage.getItem("authToken");
-      const response = await fetch("https://backend-law-vxco.onrender.com/api/users/upload-avatar", {
-        method: 'POST',
+      const response = await fetch("https://backend-law-vxco.onrender.com/api/users/profile", {
+        method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
         },
