@@ -66,7 +66,7 @@ export default function Home() {
         <title>Trang chủ - Tìm hiểu và Tư vấn các vấn đề về Pháp luật - Pháp lý</title>
         <meta
           name="description"
-          content="Công ty Luật ABC - Đơn vị tư vấn pháp lý hàng đầu, cung cấp các dịch vụ tư vấn pháp luật, đại diện pháp lý và soạn thảo hợp đồng."
+          content="Công ty Luật Sushilaw - Đơn vị tư vấn pháp lý hàng đầu, cung cấp các dịch vụ tư vấn pháp luật, đại diện pháp lý và soạn thảo hợp đồng."
         />
       </Helmet>
 
