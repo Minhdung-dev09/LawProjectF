@@ -1,5 +1,5 @@
 import React from 'react';
-import ChatBot from '../components/ChatBot';
+import ChatBot from '../components/Chatbot';
 import { FaRobot, FaInfoCircle } from 'react-icons/fa';
 
 const FAQ = () => {
