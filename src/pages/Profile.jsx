@@ -127,6 +127,9 @@ const Profile = () => {
       setUploading(true);
       const formData = new FormData();
       formData.append('image', selectedImage);
+      formData.append('username', user.username);
+      formData.append('email', user.email);
+      formData.append('phone', user.phone);
 
       const token = localStorage.getItem("authToken");
       const response = await fetch("https://backend-law-vxco.onrender.com/api/users/profile", {
@@ -142,7 +145,7 @@ const Profile = () => {
       }
 
       const data = await response.json();
-      setUser(prev => ({ ...prev, image: data.imageUrl }));
+      setUser(prev => ({ ...prev, image: data.image }));
       setSelectedImage(null);
     } catch (err) {
       setError(err.message);
