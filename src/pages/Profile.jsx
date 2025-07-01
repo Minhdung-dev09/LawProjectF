@@ -7,9 +7,13 @@ import {
   FaMapMarkerAlt,
   FaLock,
   FaEdit,
+  FaSave,
+  FaTimes,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../services/apisAll";
+import { toast } from "react-toastify";
+import { API_BASE_URL, API_ENDPOINTS } from "../services/apiConfig";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -26,6 +30,14 @@ const Profile = () => {
     confirmPassword: "",
   });
 
+  const [profile, setProfile] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+  });
+  const [originalProfile, setOriginalProfile] = useState({});
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -35,11 +47,14 @@ const Profile = () => {
           return;
         }
 
-        const response = await fetch("https://backend-law-vxco.onrender.com/api/users/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `${API_BASE_URL}${API_ENDPOINTS.USER_PROFILE}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Không thể lấy thông tin hồ sơ");
@@ -48,6 +63,8 @@ const Profile = () => {
         const userData = await response.json();
         setUser(userData);
         setEditedUser(userData);
+        setProfile(userData);
+        setOriginalProfile(userData);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -67,6 +84,7 @@ const Profile = () => {
     try {
       const updatedUser = await authAPI.updateProfile(editedUser);
       setUser(updatedUser);
+      setProfile(updatedUser);
       setIsEditing(false);
     } catch (err) {
       setError(err.response?.data?.message || "Cập nhật hồ sơ thất bại");
@@ -110,15 +128,27 @@ const Profile = () => {
   };
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Đang tải...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Đang tải...
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-500">
+        {error}
+      </div>
+    );
   }
 
   if (!user) {
-    return <div className="min-h-screen flex items-center justify-center">Không có dữ liệu người dùng</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Không có dữ liệu người dùng
+      </div>
+    );
   }
 
   return (
@@ -134,7 +164,14 @@ const Profile = () => {
             <div className="h-32 bg-gray-700"></div>
             <div className="absolute -bottom-16 left-8">
               <div className="w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-white shadow-lg">
-                <img src={user.image || "https://jbagy.me/wp-content/uploads/2025/03/Hinh-anh-avatar-nam-cute-2.jpg"} alt="Ảnh đại diện" className="w-full h-full object-cover" />
+                <img
+                  src={
+                    user.image ||
+                    "https://jbagy.me/wp-content/uploads/2025/03/Hinh-anh-avatar-nam-cute-2.jpg"
+                  }
+                  alt="Ảnh đại diện"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>
@@ -143,7 +180,9 @@ const Profile = () => {
           <div className="pt-20 pb-8 px-8">
             <div className="flex justify-between items-start mb-8">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">{user.username}</h1>
+                <h1 className="text-3xl font-bold text-gray-900">
+                  {user.username}
+                </h1>
                 <p className="text-gray-600 mt-1">{user.email}</p>
               </div>
               {!isEditing && (
@@ -160,11 +199,15 @@ const Profile = () => {
             <div className="space-y-8">
               {/* Thông tin cá nhân */}
               <div className="bg-gray-50 rounded-xl p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">Thông tin cá nhân</h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                  Thông tin cá nhân
+                </h2>
                 {isEditing ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Họ tên</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Họ tên
+                      </label>
                       <input
                         type="text"
                         name="name"
@@ -174,7 +217,9 @@ const Profile = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Email
+                      </label>
                       <input
                         type="email"
                         name="email"
@@ -184,7 +229,9 @@ const Profile = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Số điện thoại</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Số điện thoại
+                      </label>
                       <input
                         type="tel"
                         name="phone"
@@ -201,7 +248,9 @@ const Profile = () => {
                         <FaUser className="text-white" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-medium text-gray-500">Họ tên</h3>
+                        <h3 className="text-sm font-medium text-gray-500">
+                          Họ tên
+                        </h3>
                         <p className="text-gray-900">{user.username}</p>
                       </div>
                     </div>
@@ -210,7 +259,9 @@ const Profile = () => {
                         <FaEnvelope className="text-white" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-medium text-gray-500">Email</h3>
+                        <h3 className="text-sm font-medium text-gray-500">
+                          Email
+                        </h3>
                         <p className="text-gray-900">{user.email}</p>
                       </div>
                     </div>
@@ -219,7 +270,9 @@ const Profile = () => {
                         <FaPhone className="text-white" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-medium text-gray-500">Số điện thoại</h3>
+                        <h3 className="text-sm font-medium text-gray-500">
+                          Số điện thoại
+                        </h3>
                         <p className="text-gray-900">{user.phone}</p>
                       </div>
                     </div>
@@ -230,10 +283,14 @@ const Profile = () => {
               {/* Đổi mật khẩu */}
               {showPasswordForm && (
                 <div className="bg-gray-50 rounded-xl p-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-6">Đổi mật khẩu</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                    Đổi mật khẩu
+                  </h2>
                   <form onSubmit={handlePasswordSubmit} className="space-y-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Mật khẩu hiện tại</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Mật khẩu hiện tại
+                      </label>
                       <input
                         type="password"
                         name="currentPassword"
@@ -243,7 +300,9 @@ const Profile = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Mật khẩu mới</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Mật khẩu mới
+                      </label>
                       <input
                         type="password"
                         name="newPassword"
@@ -253,7 +312,9 @@ const Profile = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Xác nhận mật khẩu mới</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Xác nhận mật khẩu mới
+                      </label>
                       <input
                         type="password"
                         name="confirmPassword"

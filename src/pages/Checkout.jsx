@@ -3,10 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useCart } from "../contexts/CartContext";
 import { motion } from "framer-motion";
-import { FaLock, FaCreditCard, FaUser, FaMapMarkerAlt } from "react-icons/fa";
+import {
+  FaLock,
+  FaCreditCard,
+  FaUser,
+  FaMapMarkerAlt,
+  FaPhone,
+} from "react-icons/fa";
 import axios from "axios";
-
-const API_URL = "https://backend-law-vxco.onrender.com/api/orders";
+import { API_BASE_URL, API_ENDPOINTS } from "../services/apiConfig";
+import { toast } from "react-toastify";
 
 const paymentMethods = [
   {
@@ -45,30 +51,23 @@ export default function Checkout() {
     try {
       const token = localStorage.getItem("authToken");
       if (!token) {
-        throw new Error("Vui lòng đăng nhập để tiếp tục");
+        toast.error("Vui lòng đăng nhập để thanh toán");
+        return;
       }
 
       const orderData = {
-        customerInfo: {
-          fullName: formData.fullName,
-          email: formData.email,
-          phone: formData.phone,
-          address: formData.address,
-          city: formData.city
-        },
-        items: cartItems.map(item => ({
-          product: item.id,
-          name: item.name,
+        items: cartItems.map((item) => ({
+          productId: item.id,
           quantity: item.quantity,
           price: item.price,
-          image: item.image
         })),
+        shippingAddress: formData.address,
+        paymentMethod: formData.paymentMethod,
         totalAmount: getTotal(),
-        paymentMethod: formData.paymentMethod
       };
 
       const response = await axios.post(
-        API_URL,
+        `${API_BASE_URL}${API_ENDPOINTS.ORDERS}`,
         orderData,
         {
           headers: {
@@ -81,25 +80,25 @@ export default function Checkout() {
       if (response.data) {
         // Clear cart and redirect to success page
         clearCart();
-        navigate("/checkout/success", { 
-          state: { 
+        navigate("/checkout/success", {
+          state: {
             order: {
               id: response.data.order._id,
               date: response.data.order.createdAt,
               total: response.data.order.totalAmount,
               customerInfo: response.data.order.customerInfo,
               items: response.data.order.items,
-              status: response.data.order.status
-            }
-          } 
+              status: response.data.order.status,
+            },
+          },
         });
       }
     } catch (error) {
       console.error("Payment failed:", error);
       alert(
         error.response?.data?.message ||
-        error.message ||
-        "Thanh toán thất bại. Vui lòng thử lại."
+          error.message ||
+          "Thanh toán thất bại. Vui lòng thử lại."
       );
     } finally {
       setIsProcessing(false);

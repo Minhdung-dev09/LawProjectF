@@ -4,21 +4,22 @@ import { vi } from "date-fns/locale";
 import { Helmet } from "react-helmet-async";
 import { FaEye, FaFilter, FaSpinner } from "react-icons/fa";
 import axios from "axios";
+import { API_BASE_URL, API_ENDPOINTS } from "../services/apiConfig";
 
-const API_URL = "https://backend-law-vxco.onrender.com/api/orders";
+const API_URL = `${API_BASE_URL}${API_ENDPOINTS.ORDERS}`;
 
 const statusColors = {
   pending: "bg-yellow-100 text-yellow-800",
   processing: "bg-blue-100 text-blue-800",
   completed: "bg-green-100 text-green-800",
-  cancelled: "bg-red-100 text-red-800"
+  cancelled: "bg-red-100 text-red-800",
 };
 
 const statusText = {
   pending: "Chờ xử lý",
   processing: "Đang xử lý",
   completed: "Đã hoàn thành",
-  cancelled: "Đã hủy"
+  cancelled: "Đã hủy",
 };
 
 const Orders = () => {
@@ -41,15 +42,17 @@ const Orders = () => {
 
       const response = await axios.get(API_URL, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       setOrders(response.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching orders:", error);
-      setError(error.response?.data?.message || "Không thể tải danh sách đơn hàng");
+      setError(
+        error.response?.data?.message || "Không thể tải danh sách đơn hàng"
+      );
       setLoading(false);
     }
   };
@@ -129,14 +132,22 @@ const Orders = () => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm text-gray-500">Mã đơn hàng: {order._id}</p>
+                          <p className="text-sm text-gray-500">
+                            Mã đơn hàng: {order._id}
+                          </p>
                           <p className="mt-1 text-lg font-medium text-gray-900">
                             {order.fullName}
                           </p>
                         </div>
                         <div className="flex items-center space-x-4">
                           <span className="text-lg font-medium text-primary-600">
-                            {(order.totalAmount || order.total || order.subtotal || 0).toLocaleString("vi-VN")}đ
+                            {(
+                              order.totalAmount ||
+                              order.total ||
+                              order.subtotal ||
+                              0
+                            ).toLocaleString("vi-VN")}
+                            đ
                           </span>
                           <button
                             onClick={() => setSelectedOrder(order)}
@@ -150,16 +161,24 @@ const Orders = () => {
                         <div>
                           <p className="text-sm text-gray-500">
                             Thời gian đặt hàng:{" "}
-                            {format(new Date(order.createdAt), "HH:mm - dd/MM/yyyy", {
-                              locale: vi,
-                            })}
+                            {format(
+                              new Date(order.createdAt),
+                              "HH:mm - dd/MM/yyyy",
+                              {
+                                locale: vi,
+                              }
+                            )}
                           </p>
                           <p className="text-sm text-gray-500 mt-1">
                             Địa chỉ: {order.address}, {order.city}
                           </p>
                         </div>
                         <div className="flex justify-end">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status]}`}>
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              statusColors[order.status]
+                            }`}
+                          >
                             {statusText[order.status]}
                           </span>
                         </div>
@@ -183,7 +202,9 @@ const Orders = () => {
                   <h2 className="text-2xl font-semibold text-gray-900">
                     Chi tiết đơn hàng
                   </h2>
-                  <p className="text-gray-500 mt-1">Mã đơn hàng: {selectedOrder._id}</p>
+                  <p className="text-gray-500 mt-1">
+                    Mã đơn hàng: {selectedOrder._id}
+                  </p>
                 </div>
                 <button
                   onClick={() => setSelectedOrder(null)}
@@ -197,27 +218,49 @@ const Orders = () => {
                 <div className="bg-gray-50 rounded-lg p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <p className="text-sm font-medium text-gray-500">Tổng tiền</p>
+                      <p className="text-sm font-medium text-gray-500">
+                        Tổng tiền
+                      </p>
                       <p className="mt-1 text-gray-900">
-                        {(selectedOrder.totalAmount || selectedOrder.total || selectedOrder.subtotal || 0).toLocaleString("vi-VN")}đ
+                        {(
+                          selectedOrder.totalAmount ||
+                          selectedOrder.total ||
+                          selectedOrder.subtotal ||
+                          0
+                        ).toLocaleString("vi-VN")}
+                        đ
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-500">Trạng thái</p>
-                      <span className={`mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[selectedOrder.status]}`}>
+                      <p className="text-sm font-medium text-gray-500">
+                        Trạng thái
+                      </p>
+                      <span
+                        className={`mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          statusColors[selectedOrder.status]
+                        }`}
+                      >
                         {statusText[selectedOrder.status]}
                       </span>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-500">Thời gian đặt hàng</p>
+                      <p className="text-sm font-medium text-gray-500">
+                        Thời gian đặt hàng
+                      </p>
                       <p className="mt-1 text-gray-900">
-                        {format(new Date(selectedOrder.createdAt), "HH:mm - dd/MM/yyyy", {
-                          locale: vi,
-                        })}
+                        {format(
+                          new Date(selectedOrder.createdAt),
+                          "HH:mm - dd/MM/yyyy",
+                          {
+                            locale: vi,
+                          }
+                        )}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-500">Phương thức thanh toán</p>
+                      <p className="text-sm font-medium text-gray-500">
+                        Phương thức thanh toán
+                      </p>
                       <p className="mt-1 text-gray-900">
                         {selectedOrder.paymentMethod}
                       </p>
@@ -226,18 +269,22 @@ const Orders = () => {
                 </div>
 
                 <div className="border-t pt-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Sản phẩm</h3>
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">
+                    Sản phẩm
+                  </h3>
                   <div className="space-y-4">
                     {selectedOrder.items.map((item, index) => (
                       <div key={index} className="flex items-center">
                         <div className="ml-4 flex-grow">
                           <p className="font-medium">{item.productName}</p>
                           <p className="text-sm text-gray-500">
-                            Số lượng: {item.quantity} x {item.price.toLocaleString("vi-VN")}đ
+                            Số lượng: {item.quantity} x{" "}
+                            {item.price.toLocaleString("vi-VN")}đ
                           </p>
                         </div>
                         <p className="font-medium">
-                          {(item.quantity * item.price).toLocaleString("vi-VN")}đ
+                          {(item.quantity * item.price).toLocaleString("vi-VN")}
+                          đ
                         </p>
                       </div>
                     ))}
@@ -250,11 +297,15 @@ const Orders = () => {
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <p className="text-sm font-medium text-gray-500">Người nhận</p>
+                      <p className="text-sm font-medium text-gray-500">
+                        Người nhận
+                      </p>
                       <p className="mt-1">{selectedOrder.fullName}</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-500">Số điện thoại</p>
+                      <p className="text-sm font-medium text-gray-500">
+                        Số điện thoại
+                      </p>
                       <p className="mt-1">{selectedOrder.phone}</p>
                     </div>
                     <div>
@@ -262,7 +313,9 @@ const Orders = () => {
                       <p className="mt-1">{selectedOrder.email}</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-500">Địa chỉ</p>
+                      <p className="text-sm font-medium text-gray-500">
+                        Địa chỉ
+                      </p>
                       <p className="mt-1">
                         {selectedOrder.address}, {selectedOrder.city}
                       </p>

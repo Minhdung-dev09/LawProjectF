@@ -6,6 +6,10 @@ import NewsSidebar from "../components/news/NewsSidebar";
 import NewsCard from "../components/news/NewsCard";
 import NewsDetail from "../components/news/NewsDetail";
 import { newsCategories } from "../data";
+import { FaSearch, FaFilter, FaCalendar, FaUser, FaEye } from "react-icons/fa";
+import { format } from "date-fns";
+import { vi } from "date-fns/locale";
+import { API_BASE_URL, API_ENDPOINTS } from "../services/apiConfig";
 
 export default function News() {
   const { id } = useParams();
@@ -22,23 +26,23 @@ export default function News() {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        const response = await fetch('https://backend-law-vxco.onrender.com/api/news/');
+        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.NEWS}/`);
         if (!response.ok) {
-          throw new Error('Failed to fetch news');
+          throw new Error("Failed to fetch news");
         }
         const data = await response.json();
         // Transform the data to match the frontend structure
-        const transformedData = data.map(item => ({
+        const transformedData = data.map((item) => ({
           id: item._id,
-          title: item.title || 'Untitled',
-          excerpt: item.excerpt || '',
-          content: item.content || '',
-          image: item.image || '/default-news-image.jpg',
-          category: item.category || 'uncategorized',
-          date: new Date(item.createdAt).toLocaleDateString('vi-VN'),
-          author: item.author?.username || 'Anonymous',
+          title: item.title || "Untitled",
+          excerpt: item.excerpt || "",
+          content: item.content || "",
+          image: item.image || "/default-news-image.jpg",
+          category: item.category || "uncategorized",
+          date: new Date(item.createdAt).toLocaleDateString("vi-VN"),
+          author: item.author?.username || "Anonymous",
           views: item.views || 0,
-          tags: item.tags || []
+          tags: item.tags || [],
         }));
         setNews(transformedData);
         setError(null);
@@ -91,8 +95,8 @@ export default function News() {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
         <p className="text-red-600">Có lỗi xảy ra: {error}</p>
-        <button 
-          onClick={() => window.location.reload()} 
+        <button
+          onClick={() => window.location.reload()}
           className="mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
         >
           Thử lại

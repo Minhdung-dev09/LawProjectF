@@ -2,8 +2,18 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
+import {
+  FaArrowLeft,
+  FaCalendar,
+  FaUser,
+  FaEye,
+  FaComments,
+} from "react-icons/fa";
+import { format } from "date-fns";
+import { vi } from "date-fns/locale";
 import { newsCategories } from "../data";
 import Comment from "../components/Comment";
+import { API_BASE_URL, API_ENDPOINTS } from "../services/apiConfig";
 
 export default function NewsDetail() {
   const { id } = useParams();
@@ -15,23 +25,25 @@ export default function NewsDetail() {
     const fetchArticle = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`https://backend-law-vxco.onrender.com/api/news/${id}`);
+        const response = await fetch(
+          `${API_BASE_URL}${API_ENDPOINTS.NEWS}/${id}`
+        );
         if (!response.ok) {
-          throw new Error('Failed to fetch article');
+          throw new Error("Failed to fetch article");
         }
         const data = await response.json();
         // Transform the data to match the frontend structure
         const transformedArticle = {
           id: data._id,
-          title: data.title || 'Untitled',
-          excerpt: data.excerpt || '',
-          content: data.content || '',
-          image: data.image || '/default-news-image.jpg',
-          category: data.category || 'uncategorized',
-          date: new Date(data.createdAt).toLocaleDateString('vi-VN'),
-          author: data.author?.username || 'Anonymous',
+          title: data.title || "Untitled",
+          excerpt: data.excerpt || "",
+          content: data.content || "",
+          image: data.image || "/default-news-image.jpg",
+          category: data.category || "uncategorized",
+          date: new Date(data.createdAt).toLocaleDateString("vi-VN"),
+          author: data.author?.username || "Anonymous",
           views: data.views || 0,
-          tags: data.tags || []
+          tags: data.tags || [],
         };
         setArticle(transformedArticle);
         setError(null);

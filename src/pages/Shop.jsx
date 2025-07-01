@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useCart } from "../contexts/CartContext";
-
+import { API_BASE_URL, API_ENDPOINTS } from "../services/apiConfig";
 
 export default function Shop() {
   const { id } = useParams();
@@ -22,16 +22,18 @@ export default function Shop() {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        const response = await fetch('https://backend-law-vxco.onrender.com/api/products');
-        if (!response.ok) throw new Error('Failed to fetch products');
+        const response = await fetch(
+          `${API_BASE_URL}${API_ENDPOINTS.PRODUCTS}`
+        );
+        if (!response.ok) throw new Error("Failed to fetch products");
         const data = await response.json();
-        const transformedData = data.map(item => ({
+        const transformedData = data.map((item) => ({
           id: item._id,
-          name: item.name || 'Untitled',
+          name: item.name || "Untitled",
           price: item.price || 0,
-          description: item.description || '',
-          image: item.image || '/default-news-image.jpg',
-          category: item.category || 'uncategorized',
+          description: item.description || "",
+          image: item.image || "/default-news-image.jpg",
+          category: item.category || "uncategorized",
           stock: item.stock || 0,
         }));
         setProduct(transformedData);
@@ -62,9 +64,7 @@ export default function Shop() {
       return 0;
     });
 
-  const selectedProduct = id
-    ? product.find((item) => item.id === id)
-    : null;
+  const selectedProduct = id ? product.find((item) => item.id === id) : null;
 
   if (selectedProduct) {
     return (
@@ -108,7 +108,10 @@ export default function Shop() {
               <button
                 onClick={async () => {
                   try {
-                    console.log('Product being added from Shop:', selectedProduct);
+                    console.log(
+                      "Product being added from Shop:",
+                      selectedProduct
+                    );
                     await addToCart(selectedProduct);
                     alert("Đã thêm vào giỏ hàng thành công!");
                   } catch (error) {

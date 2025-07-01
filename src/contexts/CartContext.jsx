@@ -1,20 +1,21 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { API_BASE_URL, API_ENDPOINTS } from "../services/apiConfig";
 
 const CartContext = createContext();
-const API_URL = "http://localhost:5000/api/cart";
+const API_URL = `${API_BASE_URL}${API_ENDPOINTS.CART}`;
 
 // Helper function to transform cart items from API to frontend format
 const transformCartItems = (apiResponse) => {
   if (!apiResponse || !apiResponse.items) return [];
-  
-  return apiResponse.items.map(item => ({
+
+  return apiResponse.items.map((item) => ({
     id: item.product._id,
     name: item.product.name,
     price: item.product.price,
     image: item.product.image,
-    quantity: item.quantity
+    quantity: item.quantity,
   }));
 };
 
@@ -34,7 +35,7 @@ export function CartProvider({ children }) {
         setLoading(false);
         return;
       }
-      
+
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -66,20 +67,23 @@ export function CartProvider({ children }) {
           Authorization: `Bearer ${token}`,
         },
       };
-      
 
       const productId = product._id || product.id;
-      
+
       if (!productId) {
         console.error("No product ID found:", product);
         toast.error("Invalid product data");
         return;
       }
 
-      const response = await axios.post(API_URL, {
-        productId: productId,
-        quantity: 1
-      }, config);
+      const response = await axios.post(
+        API_URL,
+        {
+          productId: productId,
+          quantity: 1,
+        },
+        config
+      );
 
       // Transform the API response to match frontend format
       const transformedItems = transformCartItems(response.data);
@@ -108,9 +112,11 @@ export function CartProvider({ children }) {
           Authorization: `Bearer ${token}`,
         },
       };
-      
+
       await axios.delete(`${API_URL}/item/${productId}`, config);
-      setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
+      setCartItems((prevItems) =>
+        prevItems.filter((item) => item.id !== productId)
+      );
       toast.success("Product removed from cart");
     } catch (error) {
       console.error("Error removing from cart:", error);
@@ -132,11 +138,15 @@ export function CartProvider({ children }) {
           Authorization: `Bearer ${token}`,
         },
       };
-      
-      const response = await axios.put(API_URL, {
-        productId,
-        quantity
-      }, config);
+
+      const response = await axios.put(
+        API_URL,
+        {
+          productId,
+          quantity,
+        },
+        config
+      );
 
       // Transform the API response to match frontend format
       const transformedItems = transformCartItems(response.data);
@@ -161,7 +171,7 @@ export function CartProvider({ children }) {
           Authorization: `Bearer ${token}`,
         },
       };
-      
+
       await axios.delete(API_URL, config);
       setCartItems([]);
       toast.success("Cart cleared successfully");

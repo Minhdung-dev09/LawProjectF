@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaUser,
   FaEnvelope,
   FaLock,
   FaPhone,
   FaBalanceScale,
+  FaEye,
+  FaEyeSlash,
 } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { API_BASE_URL, API_ENDPOINTS } from "../services/apiConfig";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -23,6 +26,8 @@ export default function Register() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -32,7 +37,7 @@ export default function Register() {
 
     // Basic validation
     if (formData.password !== formData.confirmPassword) {
-      setError("Mật khẩu và xác nhận mật khẩu không khớp.");
+      toast.error("Mật khẩu xác nhận không khớp");
       return;
     }
 
@@ -50,7 +55,7 @@ export default function Register() {
 
     try {
       // Gửi dữ liệu lên backend API
-      const response = await fetch("https://backend-law-vxco.onrender.com/api/users", {
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.USERS}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +77,7 @@ export default function Register() {
         setSuccess("Đăng ký thành công! Bạn có thể đăng nhập ngay.");
         navigate("/login"); // Redirect to login page after successful registration
         setFormData({
-          username: "", 
+          username: "",
           email: "",
           phone: "",
           password: "",
@@ -129,10 +134,14 @@ export default function Register() {
             </div>
 
             {error && (
-              <p className="mb-4 text-red-600 font-semibold text-center">{error}</p>
+              <p className="mb-4 text-red-600 font-semibold text-center">
+                {error}
+              </p>
             )}
             {success && (
-              <p className="mb-4 text-green-600 font-semibold text-center">{success}</p>
+              <p className="mb-4 text-green-600 font-semibold text-center">
+                {success}
+              </p>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -221,7 +230,7 @@ export default function Register() {
                     <FaLock className="h-5 w-5 text-primary-400" />
                   </div>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     id="password"
                     name="password"
                     value={formData.password}
@@ -230,6 +239,13 @@ export default function Register() {
                     className="w-full pl-10 pr-4 py-2 border border-primary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                     placeholder="••••••••"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-primary-400"
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
                 </div>
               </div>
 
@@ -245,7 +261,7 @@ export default function Register() {
                     <FaLock className="h-5 w-5 text-primary-400" />
                   </div>
                   <input
-                    type="password"
+                    type={showConfirmPassword ? "text" : "password"}
                     id="confirmPassword"
                     name="confirmPassword"
                     value={formData.confirmPassword}
@@ -254,6 +270,13 @@ export default function Register() {
                     className="w-full pl-10 pr-4 py-2 border border-primary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                     placeholder="••••••••"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-primary-400"
+                  >
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
                 </div>
               </div>
 
