@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const CartContext = createContext();
-const API_URL = "http://localhost:5000/api/cart";
+const API_URL = "https://backend-law-vxco.onrender.com/api/cart";
 
 // Helper function to transform cart items from API to frontend format
 const transformCartItems = (apiResponse) => {
