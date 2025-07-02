@@ -14,7 +14,7 @@
     --color-primary-700: #334e68;
     --color-primary-800: #243b53;
     --color-primary-900: #102a43;
-    
+
     --color-secondary-50: #f8f9fa;
     --color-secondary-100: #e9ecef;
     --color-secondary-200: #dee2e6;
@@ -25,7 +25,7 @@
     --color-secondary-700: #343a40;
     --color-secondary-800: #212529;
     --color-secondary-900: #121416;
-    
+
     --color-accent-50: #fff1f2;
     --color-accent-100: #ffe4e6;
     --color-accent-200: #fecdd3;
@@ -44,11 +44,17 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-serif);
     color: var(--color-primary-900);
   }
-
+  h1 {
+    color: white;
+  }
   p {
     color: var(--color-secondary-800);
     line-height: 1.6;
