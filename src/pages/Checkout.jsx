@@ -64,6 +64,13 @@ export default function Checkout() {
         shippingAddress: formData.address,
         paymentMethod: formData.paymentMethod,
         totalAmount: getTotal(),
+        customerInfo: {
+          fullName: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          city: formData.city,
+        },
       };
 
       const response = await axios.post(
