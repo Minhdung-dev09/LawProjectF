@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Base URL chung cho tất cả API
-export const API_BASE_URL = "https://backend-law-vxco.onrender.com/api";
+export const API_BASE_URL = "https://lawbackend-cr50.onrender.com/api";
 
 // Các endpoint constants để dễ quản lý
 export const API_ENDPOINTS = {
