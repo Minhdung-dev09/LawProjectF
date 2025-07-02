@@ -20,7 +20,6 @@ const navigation = [
   { name: "Tin tức", href: "/news" },
   { name: "Cửa hàng", href: "/shop" },
   { name: "Tư vấn", href: "/consultation" },
-  { name: "FAQ", href: "/faq" },
 ];
 
 export default function Navbar() {
@@ -64,7 +63,7 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-            <img src="/logo.svg" alt="SushiLaw Logo" className="h-10 w-10" />
+              <img src="/logo.svg" alt="SushiLaw Logo" className="h-10 w-10" />
               <span className="ml-2 text-xl font-bold text-primary-900">
                 SushiLaw
               </span>
