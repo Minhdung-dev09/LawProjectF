@@ -60,6 +60,29 @@ export default function Home() {
     fetchNews();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-primary-600 mb-6"></div>
+        <p className="text-primary-600 text-lg">Đang tải dữ liệu...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <p className="text-red-600 text-lg mb-4">Có lỗi xảy ra: {error}</p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+        >
+          Thử lại
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Helmet>
@@ -103,59 +126,42 @@ export default function Home() {
               <h2 className="text-2xl font-bold text-primary-800 mb-6">
                 Tin tức mới nhất
               </h2>
-              {loading ? (
-                <div className="text-center py-8">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-                  <p className="mt-4 text-primary-600">Đang tải tin tức...</p>
-                </div>
-              ) : error ? (
-                <div className="text-center py-8">
-                  <p className="text-red-600">Có lỗi xảy ra: {error}</p>
-                  <button 
-                    onClick={() => window.location.reload()} 
-                    className="mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {news.slice(0, 6).map((item) => (
+                  <motion.article
+                    key={item.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-white rounded-lg overflow-hidden shadow-lg"
                   >
-                    Thử lại
-                  </button>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {news.slice(0, 6).map((item) => (
-                    <motion.article
-                      key={item.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="bg-white rounded-lg overflow-hidden shadow-lg"
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-48 object-cover"
-                      />
-                      <div className="p-4">
-                        <div className="flex items-center text-primary-600 mb-2">
-                          <span className="mr-4 text-sm">{item.date}</span>
-                          <span className="bg-primary-100 text-primary-700 px-2 py-1 rounded-full text-xs">
-                            {item.category}
-                          </span>
-                        </div>
-                        <h3 className="text-lg font-semibold mb-2 text-primary-800 line-clamp-2">
-                          {item.title}
-                        </h3>
-                        <p className="text-primary-600 mb-4 text-sm line-clamp-3">
-                          {item.excerpt}
-                        </p>
-                        <Link
-                          to={`/news/${item.id}`}
-                          className="text-primary-600 hover:text-primary-700 font-medium text-sm"
-                        >
-                          Đọc thêm →
-                        </Link>
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4">
+                      <div className="flex items-center text-primary-600 mb-2">
+                        <span className="mr-4 text-sm">{item.date}</span>
+                        <span className="bg-primary-100 text-primary-700 px-2 py-1 rounded-full text-xs">
+                          {item.category}
+                        </span>
                       </div>
-                    </motion.article>
-                  ))}
-                </div>
-              )}
+                      <h3 className="text-lg font-semibold mb-2 text-primary-800 line-clamp-2">
+                        {item.title}
+                      </h3>
+                      <p className="text-primary-600 mb-4 text-sm line-clamp-3">
+                        {item.excerpt}
+                      </p>
+                      <Link
+                        to={`/news/${item.id}`}
+                        className="text-primary-600 hover:text-primary-700 font-medium text-sm"
+                      >
+                        Đọc thêm →
+                      </Link>
+                    </div>
+                  </motion.article>
+                ))}
+              </div>
               <div className="text-center mt-8">
                 <Link
                   to="/news"
