@@ -42,8 +42,7 @@ export const getAuthHeaders = () => {
 
 // Create axios instance with default config
 export const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 20000,
+  baseURL: API_BASE_URL
 });
 
 // Add auth header interceptor
