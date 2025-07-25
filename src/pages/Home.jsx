@@ -6,6 +6,7 @@ import Banner from "../components/Banner";
 import AdSidebar from "../components/AdSidebar";
 import WelcomePopup from "../components/WelcomePopup";
 import { newsAPI } from "../services/apisAll";
+import Loading from "../components/Loading";
 
 const features = [
   {
@@ -61,12 +62,7 @@ export default function Home() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-primary-600 mb-6"></div>
-        <p className="text-primary-600 text-lg">Đang tải dữ liệu...</p>
-      </div>
-    );
+    return <Loading message="Đang tải dữ liệu..." />;
   }
 
   if (error) {
