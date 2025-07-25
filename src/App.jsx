@@ -19,8 +19,61 @@ import Orders from "./pages/Orders";
 import MyConsultations from "./pages/MyConsultations";
 import Checkout from "./pages/Checkout";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
+import Loading from "./components/Loading";
+import { useState, useEffect } from "react";
+import { newsAPI } from "./services/apisAll";
 
 function App() {
+  const [loading, setLoading] = useState(true);
+  const [news, setNews] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        setLoading(true);
+        const data = await newsAPI.getAllNews();
+        const transformedData = data.map(item => ({
+          id: item._id,
+          title: item.title || 'Untitled',
+          excerpt: item.excerpt || '',
+          content: item.content || '',
+          image: item.image || '/default-news-image.jpg',
+          category: item.category || 'uncategorized',
+          date: new Date(item.createdAt).toLocaleDateString('vi-VN'),
+          author: item.author?.username || 'Anonymous',
+          views: item.views || 0,
+          tags: item.tags || []
+        }));
+        setNews(transformedData);
+        setError(null);
+      } catch (err) {
+        setError(err.response?.data?.message || "Có lỗi xảy ra khi tải tin tức");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchNews();
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <p className="text-red-600 text-lg mb-4">Có lỗi xảy ra: {error}</p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+        >
+          Thử lại
+        </button>
+      </div>
+    );
+  }
+
   return (
     <HelmetProvider>
       <Router>
@@ -29,7 +82,7 @@ function App() {
               <Navbar />
               <WelcomePopup />
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Home news={news} />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -48,7 +101,6 @@ function App() {
               </Routes>
               <Footer />
             </div>
-
         </CartProvider>
       </Router>
     </HelmetProvider>
