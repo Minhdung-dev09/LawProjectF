@@ -3,16 +3,25 @@ import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { FaEnvelope, FaBalanceScale, FaArrowLeft } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle password reset logic here
-    console.log(email);
-    setIsSubmitted(true);
+    setError("");
+    try {
+      // Handle password reset logic here
+      console.log(email);
+      toast.success("Yêu cầu đặt lại mật khẩu đã được gửi! Vui lòng kiểm tra email của bạn.");
+      setIsSubmitted(true);
+    } catch (err) {
+      setError(err.response?.data?.message || "Gửi yêu cầu thất bại");
+      toast.error(err.response?.data?.message || "Gửi yêu cầu thất bại. Vui lòng thử lại.");
+    }
   };
 
   return (

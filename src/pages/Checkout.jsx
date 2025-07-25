@@ -52,6 +52,7 @@ export default function Checkout() {
       const token = localStorage.getItem("authToken");
       if (!token) {
         toast.error("Vui lòng đăng nhập để thanh toán");
+        setIsProcessing(false);
         return;
       }
 
@@ -87,6 +88,7 @@ export default function Checkout() {
       if (response.data) {
         // Clear cart and redirect to success page
         clearCart();
+        toast.success("Đặt hàng thành công! Cảm ơn bạn đã mua hàng tại Sushilaw.");
         navigate("/checkout/success", {
           state: {
             order: {
@@ -102,11 +104,7 @@ export default function Checkout() {
       }
     } catch (error) {
       console.error("Payment failed:", error);
-      alert(
-        error.response?.data?.message ||
-          error.message ||
-          "Thanh toán thất bại. Vui lòng thử lại."
-      );
+      toast.error(error.response?.data?.message || error.message || "Thanh toán thất bại. Vui lòng thử lại.");
     } finally {
       setIsProcessing(false);
     }

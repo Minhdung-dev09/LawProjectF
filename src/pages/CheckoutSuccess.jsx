@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { FaCheckCircle, FaDownload, FaEnvelope } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 export default function CheckoutSuccess() {
   const navigate = useNavigate();
@@ -12,6 +13,8 @@ export default function CheckoutSuccess() {
   useEffect(() => {
     if (!order) {
       navigate("/shop");
+    } else {
+      toast.success("Chúc mừng! Đơn hàng của bạn đã được đặt thành công.");
     }
   }, [order, navigate]);
 

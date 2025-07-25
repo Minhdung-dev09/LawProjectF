@@ -33,7 +33,7 @@ export default function Consultation() {
       }
 
       await consultationAPI.createConsultation(formData);
-      alert("Gửi yêu cầu tư vấn thành công!");
+      toast.success("Gửi yêu cầu tư vấn thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất.");
       setFormData({
         fullName: "",
         email: "",

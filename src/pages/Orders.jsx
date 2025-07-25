@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { FaEye, FaFilter, FaSpinner } from "react-icons/fa";
 import axios from "axios";
 import { API_BASE_URL, API_ENDPOINTS } from "../services/apiConfig";
+import { toast } from "react-toastify";
 
 const API_URL = `${API_BASE_URL}${API_ENDPOINTS.ORDERS}`;
 
@@ -54,6 +55,44 @@ const Orders = () => {
         error.response?.data?.message || "Không thể tải danh sách đơn hàng"
       );
       setLoading(false);
+    }
+  };
+
+  const handleCancelOrder = async (orderId) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        throw new Error("Vui lòng đăng nhập để hủy đơn hàng");
+      }
+
+      await axios.put(`${API_URL}/${orderId}/cancel`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success("Đã hủy đơn hàng thành công.");
+      fetchOrders(); // Refresh orders after cancellation
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Hủy đơn hàng thất bại. Vui lòng thử lại.");
+    }
+  };
+
+  const handleConfirmOrder = async (orderId) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        throw new Error("Vui lòng đăng nhập để xác nhận đơn hàng");
+      }
+
+      await axios.put(`${API_URL}/${orderId}/confirm`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success("Đã xác nhận đơn hàng thành công.");
+      fetchOrders(); // Refresh orders after confirmation
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Xác nhận đơn hàng thất bại. Vui lòng thử lại.");
     }
   };
 

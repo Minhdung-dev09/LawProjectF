@@ -73,8 +73,10 @@ export default function Register() {
 
       if (!response.ok) {
         setError(data.message || "Đăng ký thất bại. Vui lòng thử lại.");
+        toast.error(data.message || "Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.");
       } else {
         setSuccess("Đăng ký thành công! Bạn có thể đăng nhập ngay.");
+        toast.success("Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.");
         navigate("/login"); // Redirect to login page after successful registration
         setFormData({
           username: "",
@@ -86,6 +88,7 @@ export default function Register() {
       }
     } catch (err) {
       setError("Có lỗi xảy ra. Vui lòng thử lại.");
+      toast.error("Có lỗi xảy ra. Vui lòng thử lại.");
     } finally {
       setLoading(false);
     }

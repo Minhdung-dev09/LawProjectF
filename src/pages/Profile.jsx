@@ -86,8 +86,10 @@ const Profile = () => {
       setUser(updatedUser);
       setProfile(updatedUser);
       setIsEditing(false);
+      toast.success("Cập nhật thông tin thành công!");
     } catch (err) {
       setError(err.response?.data?.message || "Cập nhật hồ sơ thất bại");
+      toast.error(err.response?.data?.message || "Cập nhật thất bại. Vui lòng thử lại.");
     }
   };
 

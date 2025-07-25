@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { CartProvider } from "./contexts/CartContext";
 import Navbar from "./components/Navbar";
@@ -22,11 +22,14 @@ import CheckoutSuccess from "./pages/CheckoutSuccess";
 import Loading from "./components/Loading";
 import { useState, useEffect } from "react";
 import { newsAPI } from "./services/apisAll";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [loading, setLoading] = useState(true);
   const [news, setNews] = useState([]);
   const [error, setError] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -81,6 +84,7 @@ function App() {
             <div className="min-h-screen bg-gray-50">
               <Navbar />
               <WelcomePopup />
+              <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
               <Routes>
                 <Route path="/" element={<Home news={news} />} />
                 <Route path="/login" element={<Login />} />
@@ -99,7 +103,7 @@ function App() {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/checkout/success" element={<CheckoutSuccess />} />
               </Routes>
-              <Footer />
+              {location.pathname === "/" && <Footer />}
             </div>
         </CartProvider>
       </Router>

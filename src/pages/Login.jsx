@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import { FaLock, FaEnvelope, FaBalanceScale } from "react-icons/fa";
 import { authAPI } from "../services/apisAll";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -22,11 +23,12 @@ export default function Login() {
 
       localStorage.setItem("authToken", token);
       localStorage.setItem("user", JSON.stringify(user));
-
+      toast.success("Đăng nhập thành công! Chào mừng bạn đến với Sushilaw.");
       navigate("/");
       window.location.reload();
     } catch (err) {
       setError(err.response?.data?.message || "Đăng nhập thất bại");
+      toast.error(err.response?.data?.message || "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
     }
   };
 
