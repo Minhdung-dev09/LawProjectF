@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { CartProvider } from "./contexts/CartContext";
 import Navbar from "./components/Navbar";
@@ -27,7 +27,6 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [news, setNews] = useState([]);
   const [error, setError] = useState(null);
-  const location = useLocation();
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -100,7 +99,6 @@ function App() {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/checkout/success" element={<CheckoutSuccess />} />
               </Routes>
-              {location.pathname === "/" && <Footer />}
             </div>
         </CartProvider>
       </Router>
